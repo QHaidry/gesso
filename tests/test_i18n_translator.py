@@ -65,6 +65,16 @@ def test_has_reports_resolvable_keys():
     assert translator.has("app.missing") is False
 
 
+def test_a_placeholder_may_be_named_key():
+    # Regression: Muralis's API-key messages use {key}, which collided with the
+    # translator's own parameter name and raised
+    # "t() got multiple values for argument 'key'". The key is positional-only
+    # now, so no placeholder can be shadowed by the signature.
+    source = catalog(en={"app": {"hint": "Your key is {key}"}})
+    translator = Translator([source], language="en", include_framework=False)
+    assert translator.t("app.hint", key="abc123") == "Your key is abc123"
+
+
 # ----------------------------------------------------------------------
 # Fallback and override
 # ----------------------------------------------------------------------

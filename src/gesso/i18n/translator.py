@@ -146,16 +146,23 @@ class Translator:
         self._reload()
 
     # -- lookup --------------------------------------------------------
-    def t(self, key: str, default: Optional[str] = None, **kwargs: Any) -> str:
-        """Translate a dotted *key*, formatting ``{placeholders}`` with *kwargs*.
+    def t(self, key_name: str, /, *, default: Optional[str] = None, **kwargs: Any) -> str:
+        """Translate a dotted *key_name*, formatting ``{placeholders}`` from *kwargs*.
+
+        The key is **positional-only**, so a translation may use a placeholder
+        named ``key`` without colliding with this signature. That is not
+        hypothetical: Muralis's API-key messages use ``{key}``, and the
+        collision cost a runtime ``TypeError`` the first time the two projects
+        met. *default* remains a reserved keyword, and therefore unusable as a
+        placeholder name.
 
         Returns *default* if given, otherwise the key itself, when nothing
         matches. Formatting failures are swallowed rather than raising: a
         stray brace in a translation should not take down the interface.
         """
-        value = self._lookup(key)
+        value = self._lookup(key_name)
         if not isinstance(value, str):
-            value = default if default is not None else key
+            value = default if default is not None else key_name
         if kwargs:
             try:
                 value = value.format(**kwargs)
@@ -163,9 +170,9 @@ class Translator:
                 pass
         return value
 
-    def has(self, key: str) -> bool:
-        """Whether *key* resolves to a string."""
-        return isinstance(self._lookup(key), str)
+    def has(self, key_name: str, /) -> bool:
+        """Whether *key_name* resolves to a string."""
+        return isinstance(self._lookup(key_name), str)
 
     # -- internals -----------------------------------------------------
     def _lookup(self, key: str) -> Any:
