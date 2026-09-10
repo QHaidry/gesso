@@ -49,6 +49,7 @@ nav:
       - Application identity: concepts/application-identity.md
       - Configuration: concepts/configuration.md
       - Internationalisation: concepts/internationalisation.md
+      - Design system: concepts/design-system.md
   - Guides:
       - Choosing a config format: guides/config-formats.md
       - Defining a schema: guides/defining-a-schema.md
@@ -60,6 +61,7 @@ nav:
       - gesso.core: reference/core.md
       - gesso.config: reference/config.md
       - gesso.i18n: reference/i18n.md
+      - gesso.ui.theme: reference/theme.md
   - Roadmap: roadmap.md
   - Contributing: contributing.md
 

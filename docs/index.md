@@ -58,7 +58,7 @@ the primer; Muralis is the mural.
 | Application identity & XDG paths | `gesso.core` | :material-check-circle: Available |
 | Configuration (JSON / TOML / YAML) | `gesso.config` | :material-check-circle: Available |
 | Internationalisation | `gesso.i18n` | :material-check-circle: Available |
-| Themes & design tokens | `gesso.ui.theme` | :material-progress-clock: Planned |
+| Themes & design tokens | `gesso.ui.theme` | :material-check-circle: Available |
 | Standard widget library | `gesso.ui.widgets` | :material-progress-clock: Planned |
 | Application shell & bootstrap | `gesso.ui.app` | :material-progress-clock: Planned |
 

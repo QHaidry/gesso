@@ -10,24 +10,20 @@ What is built, what is next, and — importantly — what Gesso will not do.
 | Typed schemas, validation | `gesso.config` |
 | JSON / TOML / YAML codecs, conversion | `gesso.config` |
 | Translation catalogs, language detection, direction | `gesso.i18n` |
+| Token contract, base stylesheet, palettes, theming | `gesso.ui.theme` |
 
 ## Next
 
 The order is deliberate: each tier is proven by an application before the next
 one is designed.
 
-### 1. Design system and theming — `gesso.ui.theme`
+### 1. Icon set with runtime tinting — `gesso.ui.icons`
 
-- A **token contract**: surfaces, text, accent, borders, typography, spacing
-- A generic, token-driven base stylesheet
-- `ThemeManager` with built-in themes plus user overrides
-- A `themeChanged` signal, so themed widgets re-tint themselves instead of
-  needing manual updates
-- SVG icon set with runtime tinting
-
-A design system is a *contract*, not a stylesheet — so a missing token will be
-reported with the token's name rather than silently collapsing the UI to the
-platform default.
+- SVG icons rendered and tinted at runtime from theme tokens, so one asset
+  serves every theme
+- A registry, so an application can add its own without forking the set
+The stylesheet already points at an icons directory for the spin-box arrows;
+this fills it out and gives widgets a themed `make_icon()`.
 
 ### 2. Standard widget library — `gesso.ui.widgets`
 

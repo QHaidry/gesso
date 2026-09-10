@@ -1,0 +1,41 @@
+{
+  "name": "Dark",
+  "description": "Gesso's default: neutral greys with a violet accent.",
+  "colors": {
+    "window": "#1e1e1e",
+    "panel": "#252526",
+    "card": "#2d2d30",
+    "card_hover": "#37373d",
+    "preview_bg": "#1a1a1a",
+    "menu_bg": "#2d2d30",
+    "nav_active_bg": "#37373d",
+    "tooltip_bg": "#3a3a3a",
+    "input_bg": "#2a2a2b",
+    "status_bg": "#252526",
+
+    "text_strong": "#f5f5f5",
+    "text": "#d4d4d4",
+    "text_muted": "#9a9a9a",
+    "text_disabled": "#6b6b6b",
+    "status_text": "#c0c0c0",
+    "tooltip_text": "#f0f0f0",
+
+    "accent": "#7c6cf6",
+    "accent_hover": "#6658d8",
+    "accent_text": "#ffffff",
+
+    "btn_bg": "#333333",
+    "btn_hover": "#3f3f3f",
+    "btn_active": "#2a2a2a",
+
+    "border": "#3c3c3c",
+    "border_strong": "#4a4a4a",
+    "input_border": "#4a4a4a",
+    "focus_border": "#7c6cf6",
+
+    "selection": "#3a3356",
+    "scroll_handle": "#4a4a4a",
+    "scroll_handle_hover": "#5a5a5a",
+    "menu_hover": "#3f3f46"
+  }
+}

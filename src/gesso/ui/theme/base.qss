@@ -1,0 +1,267 @@
+/* =====================================================================
+   Gesso base stylesheet.
+
+   Every placeholder below is a design token from the token contract. Nothing
+   here hard-codes a colour, so a theme is a data change rather than a fork of
+   this file.
+
+   Note there is no escaping in string.Template: a literal placeholder written
+   inside a comment like this one is still substituted, and would demand a
+   token that does not exist. That is why the sentence above says "placeholder"
+   rather than naming one.
+
+   The object names below (#pageHeader, #navButton, ...) are a public
+   contract: widgets in the standard library set them, so styling a widget
+   never means writing more stylesheet.
+   ===================================================================== */
+
+/* ================= Base ================= */
+QMainWindow, QDialog, QWidget#centralWidget {
+    background-color: ${window};
+    color: ${text};
+}
+
+QWidget {
+    color: ${text};
+    font-size: 13px;
+}
+
+QLabel { background: transparent; }
+
+/* ================= Typography scale ================= */
+QLabel#pageHeader   { color: ${text_strong}; font-size: 20px; font-weight: 700; }
+QLabel#pageComment  { color: ${text_muted};  font-size: 13px; }
+QLabel#pageSubtitle { color: ${text_muted};  font-size: 12px; padding-bottom: 8px; }
+
+QLabel#sectionTitle { color: ${text_strong}; font-size: 17px; font-weight: 600; }
+QLabel#sectionDesc  { color: ${text_muted};  font-size: 13px; }
+
+QLabel#rowLabel { color: ${text_strong}; font-size: 13px; font-weight: 500; }
+QLabel#rowDesc  { color: ${text_muted};  font-size: 12px; }
+
+QLabel#brand         { color: ${text_strong}; font-size: 20px; font-weight: 700; padding: 2px 8px; }
+QLabel#brandSubtitle { color: ${text_muted};  font-size: 11px; padding: 0 8px 14px 8px; }
+
+QLabel#emptyState { color: ${text_muted}; font-size: 13px; }
+
+/* ================= Surfaces ================= */
+QWidget#contentStack { background-color: ${window}; }
+
+QFrame#sidebar   { background-color: ${panel}; border-right: 1px solid ${border}; }
+QFrame#card      { background-color: ${card};  border: 1px solid ${border}; border-radius: 10px; }
+QFrame#panel     { background-color: ${panel}; border: 1px solid ${border}; border-radius: 10px; }
+QFrame#thumbFrame {
+    background-color: ${card};
+    border: 1px solid ${border};
+    border-radius: 10px;
+}
+QFrame#thumbFrame:hover { background-color: ${card_hover}; border-color: ${accent}; }
+QLabel#thumbInfo { color: ${text_muted}; font-size: 11px; padding: 2px; }
+
+/* ================= Buttons ================= */
+QPushButton {
+    background-color: ${btn_bg};
+    color: ${text};
+    border: 1px solid ${border_strong};
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+}
+QPushButton:hover    { background-color: ${btn_hover}; border-color: ${accent}; }
+QPushButton:pressed  { background-color: ${btn_active}; }
+QPushButton:disabled { color: ${text_disabled}; background-color: ${btn_bg}; border-color: ${border}; }
+
+/* The one affirmative action on a page. */
+QPushButton#primaryButton {
+    background-color: ${accent};
+    color: ${accent_text};
+    border: 1px solid ${accent};
+    font-weight: 600;
+}
+QPushButton#primaryButton:hover { background-color: ${accent_hover}; border-color: ${accent_hover}; }
+
+/* A checkable button used as an on/off switch: off is a button, on is accent. */
+QPushButton#toggleButton { text-align: left; }
+QPushButton#toggleButton:checked {
+    background-color: ${accent};
+    border-color: ${accent};
+    color: ${accent_text};
+    font-weight: 600;
+}
+
+/* Members of an exclusive segmented group. */
+QWidget#segGroup QPushButton { text-align: center; }
+QWidget#segGroup QPushButton:checked {
+    background-color: ${accent};
+    border-color: ${accent};
+    color: ${accent_text};
+    font-weight: 600;
+}
+
+QPushButton#iconButton {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 4px;
+}
+QPushButton#iconButton:hover { background-color: ${btn_hover}; }
+
+/* ================= Navigation ================= */
+QPushButton#navButton {
+    background: transparent;
+    color: ${text};
+    border: none;
+    border-left: 2px solid transparent;
+    border-radius: 8px;
+    text-align: left;
+    padding: 9px 12px;
+    font-size: 13px;
+}
+QPushButton#navButton:hover   { background-color: ${btn_hover}; color: ${text_strong}; }
+QPushButton#navButton:checked {
+    background-color: ${nav_active_bg};
+    color: ${text_strong};
+    border-left: 2px solid ${accent};
+    font-weight: 600;
+}
+QPushButton#navButton:focus { outline: none; }
+QPushButton#navButton[collapsed="true"] { text-align: center; padding-left: 0; padding-right: 0; }
+
+/* A navigation row with a title and a muted description. */
+QWidget#navItem { border-radius: 8px; padding: 0; }
+QWidget#navItem:hover { background-color: ${btn_hover}; }
+QWidget#navItem[selected="true"] { background-color: ${nav_active_bg}; }
+QWidget#navItem QLabel#navTitle { color: ${text_strong}; font-size: 13px; font-weight: 600; background: transparent; }
+QWidget#navItem QLabel#navDesc  { color: ${text_muted};  font-size: 11px; background: transparent; }
+
+/* ================= Inputs ================= */
+QLineEdit, QSpinBox, QDoubleSpinBox, QTimeEdit, QDateEdit, QComboBox {
+    background-color: ${input_bg};
+    color: ${text};
+    border: 1px solid ${input_border};
+    border-radius: 8px;
+    padding: 5px 8px;
+    selection-background-color: ${selection};
+    selection-color: ${text};
+}
+QLineEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus,
+QTimeEdit:focus, QDateEdit:focus, QComboBox:focus {
+    border: 1px solid ${focus_border};
+}
+QLineEdit:disabled, QSpinBox:disabled, QDoubleSpinBox:disabled, QComboBox:disabled {
+    color: ${text_disabled};
+}
+
+QSpinBox::up-button, QSpinBox::down-button,
+QDoubleSpinBox::up-button, QDoubleSpinBox::down-button {
+    background-color: transparent;
+    border: none;
+    width: 18px;
+}
+QSpinBox::up-arrow, QDoubleSpinBox::up-arrow {
+    image: url(${icon_dir}/chevron-up.svg);
+    width: 14px; height: 14px;
+}
+QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {
+    image: url(${icon_dir}/chevron-down.svg);
+    width: 14px; height: 14px;
+}
+
+QComboBox::drop-down { border: none; width: 18px; }
+QCheckBox, QRadioButton { color: ${text}; spacing: 8px; }
+QCheckBox:disabled, QRadioButton:disabled { color: ${text_disabled}; }
+
+/* ================= Text areas ================= */
+QPlainTextEdit, QTextEdit {
+    background-color: ${input_bg};
+    color: ${text};
+    border: 1px solid ${input_border};
+    border-radius: 8px;
+    selection-background-color: ${selection};
+    selection-color: ${text};
+}
+
+/* ================= Scroll areas ================= */
+QScrollArea { border: none; background: transparent; }
+QScrollArea > QWidget > QWidget { background: transparent; }
+
+QScrollBar:vertical   { background: ${window}; width: 12px;  margin: 0; }
+QScrollBar:horizontal { background: ${window}; height: 12px; margin: 0; }
+QScrollBar::handle:vertical {
+    background: ${scroll_handle};
+    min-height: 30px;
+    border-radius: 6px;
+    margin: 2px;
+}
+QScrollBar::handle:horizontal {
+    background: ${scroll_handle};
+    min-width: 30px;
+    border-radius: 6px;
+    margin: 2px;
+}
+QScrollBar::handle:hover { background: ${scroll_handle_hover}; }
+QScrollBar::add-line, QScrollBar::sub-line { width: 0; height: 0; }
+QScrollBar::add-page, QScrollBar::sub-page { background: none; }
+
+/* ================= Status bar ================= */
+QStatusBar { background-color: ${status_bg}; color: ${status_text}; font-size: 12px; }
+QStatusBar::item { border: none; }
+QLabel#statusInfo { color: ${status_text}; font-size: 12px; padding: 2px 8px; }
+
+/* ================= Menus ================= */
+QMenu {
+    background-color: ${menu_bg};
+    color: ${text};
+    border: 1px solid ${border};
+    padding: 4px;
+    border-radius: 6px;
+}
+QMenu::item           { padding: 6px 24px; border-radius: 6px; }
+QMenu::item:selected  { background-color: ${menu_hover}; color: ${text_strong}; }
+QMenu::item:disabled  { color: ${text_disabled}; }
+QMenu::separator      { height: 1px; background: ${border}; margin: 4px 8px; }
+
+QMenuBar { background-color: ${window}; color: ${text}; }
+QMenuBar::item:selected { background-color: ${menu_hover}; }
+
+/* ================= Tooltips ================= */
+QToolTip {
+    background-color: ${tooltip_bg};
+    color: ${tooltip_text};
+    border: 1px solid ${border};
+    border-radius: 6px;
+    padding: 6px;
+    font-size: 12px;
+}
+
+/* ================= Message boxes ================= */
+QMessageBox          { background-color: ${menu_bg}; }
+QMessageBox QLabel   { color: ${text}; }
+
+/* ================= Tabs and groups ================= */
+QTabWidget::pane { border: 1px solid ${border}; border-radius: 8px; }
+QTabBar::tab {
+    background: transparent;
+    color: ${text_muted};
+    padding: 6px 12px;
+    border-bottom: 2px solid transparent;
+}
+QTabBar::tab:selected { color: ${text_strong}; border-bottom: 2px solid ${accent}; }
+QTabBar::tab:hover    { color: ${text}; }
+
+QGroupBox {
+    border: 1px solid ${border};
+    border-radius: 8px;
+    margin-top: 10px;
+    padding-top: 8px;
+}
+QGroupBox::title { color: ${text_muted}; subcontrol-origin: margin; left: 10px; }
+
+QProgressBar {
+    background-color: ${input_bg};
+    border: 1px solid ${input_border};
+    border-radius: 6px;
+    text-align: center;
+    color: ${text};
+}
+QProgressBar::chunk { background-color: ${accent}; border-radius: 6px; }
