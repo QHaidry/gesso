@@ -1,0 +1,95 @@
+site_name: Gesso
+site_description: "An SDK for building Qt (PySide6) desktop applications"
+site_author: Quoxiom
+site_url: https://quoxiom.github.io/gesso/
+repo_url: https://github.com/quoxiom/gesso
+repo_name: quoxiom/gesso
+copyright: Copyright &copy; 2026 Quoxiom (Qamber Haidry)
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - toc.follow
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - search.suggest
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
+      accent: deep purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - Installation: getting-started/installation.md
+      - Quickstart: getting-started/quickstart.md
+  - Concepts:
+      - Architecture: concepts/architecture.md
+      - Application identity: concepts/application-identity.md
+      - Configuration: concepts/configuration.md
+  - Guides:
+      - Choosing a config format: guides/config-formats.md
+      - Defining a schema: guides/defining-a-schema.md
+      - Validating and migrating: guides/validating-and-migrating.md
+  - Examples:
+      - Overview: examples/index.md
+      - Hello, Gesso (CLI): examples/hello-cli.md
+  - Reference:
+      - gesso.core: reference/core.md
+      - gesso.config: reference/config.md
+  - Roadmap: roadmap.md
+  - Contributing: contributing.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  # Embed real files from the repository so documentation cannot drift from
+  # the code it describes. `check_paths` turns a typo into a build failure.
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search
+
+strict: true
