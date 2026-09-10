@@ -85,14 +85,41 @@ class Option:
     type: type
     default: Any
     description: str = ""
+    choices: Sequence[Any] | None = None
+    minimum: float | None = None
+    maximum: float | None = None
+    pattern: str | None = None
 ```
 
 | Method | Description |
 | --- | --- |
 | `coerce(value)` | Convert to the declared type; raises `ValueError` on failure |
+| `check(value)` | Constraint problems with an *already-coerced* value; empty means acceptable |
+| `coerce_and_check(value)` | Both, returning `(value, problems)` |
 
 Supported `type` values: `bool`, `int`, `float`, `str`, `list`, `dict`. Anything
 else raises `SchemaError` when `coerce` is called.
+
+**Type and constraint are separate concerns.** A type says what shape a value
+is; a constraint says whether that value is acceptable. `"nonsense"` fails the
+type; `99999` passes the type but fails the constraint.
+
+| Constraint | Applies to | Meaning |
+| --- | --- | --- |
+| `choices` | any | The value must be one of these |
+| `minimum` / `maximum` | `int`, `float` | Inclusive bounds. Ignored for other types, so a stray bound on a string option cannot produce nonsense comparisons |
+| `pattern` | `str` | A regular expression the **whole** value must match |
+
+```python
+Option("resolution", str, "1920x1080", pattern=r"^\d{3,4}x\d{3,4}$")
+Option("quality", int, 90, minimum=1, maximum=100)
+Option("effect", str, "none", choices=["none", "blur", "vignette"])
+```
+
+Constraints are enforced in two places: `Schema.validate()` reports a violation
+alongside type errors, and `ConfigStore.set()` **rejects** it with a
+`ConfigError` rather than storing it. Writing an unacceptable value is a
+mistake at the call site, and it should surface there.
 
 ### `Section`
 

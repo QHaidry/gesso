@@ -8,10 +8,16 @@ floats) and the schema coerces and validates them at the boundary.
 This is a deliberate change from a stringly-typed config. A stringly-typed
 config cannot survive contact with TOML, where ``auto_update = "true"`` is the
 *string* ``"true"`` and ``auto_update = true`` is the *boolean* ``True``.
+
+An option declares a **type** and, optionally, **constraints**. The split
+matters: a type says what shape a value is, a constraint says whether that
+value is acceptable. ``"nonsense"`` fails the type; ``99999`` passes the type
+but fails the constraint.
 """
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
@@ -77,14 +83,26 @@ def _to_str(value: Any) -> str:
     raise ValueError(f"cannot read {value!r} as text")
 
 
+def _is_number(value: Any) -> bool:
+    """Whether *value* is a real number. ``bool`` is not (see ``_to_int``)."""
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
 @dataclass(frozen=True)
 class Option:
-    """One setting: a dotted-addressable key with a type and a default."""
+    """One setting: a type, a default, and optional constraints."""
 
     key: str
     type: type
     default: Any
     description: str = ""
+    #: The only values considered acceptable, if given.
+    choices: Optional[Sequence[Any]] = None
+    #: Inclusive bounds for numeric options.
+    minimum: Optional[float] = None
+    maximum: Optional[float] = None
+    #: A regular expression the whole string value must match.
+    pattern: Optional[str] = None
 
     def coerce(self, value: Any) -> Any:
         """Convert *value* to this option's declared type.
@@ -108,6 +126,39 @@ class Option:
                 return dict(value)
             raise ValueError(f"cannot read {value!r} as a table")
         raise SchemaError(f"unsupported option type {self.type!r} for {self.key!r}")
+
+    def check(self, value: Any) -> List[str]:
+        """Constraint problems with an already-coerced *value*.
+
+        Returns human-readable problems; empty means acceptable. Type errors
+        are :meth:`coerce`'s job — this is about a value being *wrong* rather
+        than the wrong shape.
+        """
+        problems: List[str] = []
+
+        if self.choices is not None and value not in self.choices:
+            allowed = ", ".join(str(choice) for choice in self.choices)
+            problems.append(f"{value!r} is not one of: {allowed}")
+
+        if self.minimum is not None and _is_number(value) and value < self.minimum:
+            problems.append(f"{value} is below the minimum of {self.minimum}")
+
+        if self.maximum is not None and _is_number(value) and value > self.maximum:
+            problems.append(f"{value} exceeds the maximum of {self.maximum}")
+
+        if self.pattern is not None and isinstance(value, str):
+            if re.fullmatch(self.pattern, value) is None:
+                problems.append(f"{value!r} does not match the required format")
+
+        return problems
+
+    def coerce_and_check(self, value: Any) -> Tuple[Any, List[str]]:
+        """Coerce *value*, then check it. Returns ``(value, problems)``.
+
+        Raises :class:`ValueError` if the value cannot be coerced at all.
+        """
+        coerced = self.coerce(value)
+        return coerced, self.check(coerced)
 
 
 @dataclass(frozen=True)
@@ -170,11 +221,20 @@ class Schema:
         option = self.option(section, key)
         return value if option is None else option.coerce(value)
 
+    def check(self, section: str, key: str, value: Any) -> List[str]:
+        """Constraint problems for one already-coerced value.
+
+        Unknown keys have no constraints to violate, so they pass.
+        """
+        option = self.option(section, key)
+        return [] if option is None else option.check(value)
+
     def validate(self, data: Dict[str, Any]) -> List[str]:
         """Return human-readable problems with *data*; empty means valid.
 
         Missing keys are *not* problems — they are filled from the defaults.
-        Unknown sections/keys and values that cannot be coerced are.
+        Unknown sections/keys, values that cannot be coerced, and values that
+        violate a constraint all are.
         """
         problems: List[str] = []
         for section_name, options in data.items():
@@ -191,7 +251,10 @@ class Schema:
                     problems.append(f"unknown option {section_name}.{key}")
                     continue
                 try:
-                    option.coerce(value)
+                    coerced = option.coerce(value)
                 except ValueError as exc:
                     problems.append(f"{section_name}.{key}: {exc}")
+                    continue
+                for problem in option.check(coerced):
+                    problems.append(f"{section_name}.{key}: {problem}")
         return problems

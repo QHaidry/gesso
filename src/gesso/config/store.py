@@ -249,16 +249,22 @@ class ConfigStore:
         return table.get(key, default)
 
     def set(self, dotted: str, value: Any) -> None:
-        """Write ``"section.key"``, coercing to the schema's declared type."""
+        """Write ``"section.key"``, coercing to the declared type.
+
+        A value that cannot be coerced, or that violates one of the option's
+        constraints, is rejected here rather than stored and discovered later.
+        """
         section, separator, key = dotted.partition(".")
         if not separator:
             raise ConfigError(f"expected 'section.key', got {dotted!r}")
         option = self._schema.option(section, key)
         if option is not None:
             try:
-                value = option.coerce(value)
+                value, problems = option.coerce_and_check(value)
             except ValueError as exc:
                 raise ConfigError(f"{dotted}: {exc}") from exc
+            if problems:
+                raise ConfigError(f"{dotted}: " + "; ".join(problems))
         table = self._data.setdefault(section, {})
         if not isinstance(table, dict):
             raise ConfigError(f"[{section}] is not a table, so {dotted} cannot be set")
