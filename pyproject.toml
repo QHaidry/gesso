@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel>=0.37.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gesso-sdk"
+dynamic = ["version"]
+description = "Gesso — a framework for building Qt (PySide6) desktop applications"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Qamber Haidry", email = "qamber.haidry@quoxiom.com" }]
+keywords = ["qt", "pyside6", "desktop", "framework", "design-system", "i18n"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: User Interfaces",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+]
+
+# The framework core has no runtime dependencies. Every heavier capability
+# (Qt, TOML writing, YAML) is an opt-in extra so a CLI-only consumer installs
+# nothing it does not use.
+dependencies = []
+
+[project.optional-dependencies]
+toml = ["tomli>=2.0.0; python_version < '3.11'", "tomli-w>=1.0.0"]
+yaml = ["PyYAML>=6.0"]
+gui = ["PySide6>=6.5.0"]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "PyYAML>=6.0",
+    "tomli-w>=1.0.0",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = { find = { where = ["src"] } }
+
+[tool.setuptools.dynamic]
+version = { attr = "gesso.__version__" }
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
+python_files = "test_*.py"
+pythonpath = ["src"]
+addopts = ["-ra", "-q", "--strict-markers", "--strict-config"]
+markers = [
+    "slow: marks tests as slow",
+]
+
+[tool.coverage.run]
+source = ["src/gesso"]
