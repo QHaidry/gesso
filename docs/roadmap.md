@@ -9,26 +9,14 @@ What is built, what is next, and — importantly — what Gesso will not do.
 | Application identity, XDG path resolution | `gesso.core` |
 | Typed schemas, validation | `gesso.config` |
 | JSON / TOML / YAML codecs, conversion | `gesso.config` |
+| Translation catalogs, language detection, direction | `gesso.i18n` |
 
 ## Next
 
 The order is deliberate: each tier is proven by an application before the next
 one is designed.
 
-### 1. Internationalisation — `gesso.i18n`
-
-- JSON translation files, user-overridable, English fallback
-- Locale detection from `LANGUAGE`, `LC_ALL`, `LC_MESSAGES`, `LANG`
-- A **domain** concept, so Gesso owns `gesso.*` keys and your application owns
-  its own without collisions
-- Locale-aware number and date formatting
-- RTL support flag
-
-JSON is kept as the format — it is CLI-friendly and trivially overridable — but
-the backend will be pluggable, so gettext or Qt's `.qm` files can be added later
-for plural forms, which JSON handles poorly.
-
-### 2. Design system and theming — `gesso.ui.theme`
+### 1. Design system and theming — `gesso.ui.theme`
 
 - A **token contract**: surfaces, text, accent, borders, typography, spacing
 - A generic, token-driven base stylesheet
@@ -41,7 +29,7 @@ A design system is a *contract*, not a stylesheet — so a missing token will be
 reported with the token's name rather than silently collapsing the UI to the
 platform default.
 
-### 3. Standard widget library — `gesso.ui.widgets`
+### 2. Standard widget library — `gesso.ui.widgets`
 
 The largest piece, and the one that does not exist in any form today:
 
@@ -53,23 +41,41 @@ The largest piece, and the one that does not exist in any form today:
 - **`SettingsPage`** — driven by a schema, so declaring your options gives you a
   complete settings UI
 
-### 4. Application shell — `gesso.ui.app`
+The dialogs and buttons will read their labels through `gesso.i18n`, which is
+why that tier came first.
+
+### 3. Application shell — `gesso.ui.app`
 
 - `run_app(spec, window_factory)`: `QApplication` metadata, high-DPI, palette
   *and* stylesheet, translator installation, exception hook
 - `AppShell`: collapsible sidebar, navigation, content stack, status bar
 - System tray and desktop notifications
 
-### 5. Project generator
+### 4. Project generator
 
 `gesso new myapp` — a scaffold with all of the above already wired: entry points,
 packaging, CI, tests, theme, translations and a settings schema, so a new project
 starts from a working application rather than an empty directory.
 
-### 6. Migrations
+### 5. Migrations
 
 A declarative schema-version mechanism, replacing the explicit
 [manual migrations](guides/validating-and-migrating.md#migrating) used today.
+
+### 6. An optional internationalisation backend
+
+Two things `gesso.i18n` deliberately does not do, because doing them properly
+needs real CLDR data and guessing is worse than waiting:
+
+- **Plural rules.** English's one/other split is not how Polish, Arabic or
+  Russian work.
+- **Locale-aware number and date formatting.** `1234567.89` is written
+  differently in Germany, India and the United States.
+
+These ship as an **optional extra**, so the dependency-free core stays
+dependency-free. The catalog contract is already narrow —
+`catalog(language) -> dict` — so a gettext or Qt `.qm` backend can be added
+without changing the public API.
 
 ## Adjacent, not yet scheduled
 
@@ -87,7 +93,7 @@ Stating this keeps the SDK from bloating:
 
 - **No plugin framework.** Extension is constructor arguments and subclassing.
 - **No global application singleton.** `AppContext` is something you construct,
-  including in tests.
+  including in tests — and there is no process-wide `Translator` either.
 - **No domain code.** If it is specific to your product, it belongs to your
   product.
 - **No framework lock-in.** Gesso is a library you call; it does not run your

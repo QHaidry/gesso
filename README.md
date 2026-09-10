@@ -5,9 +5,9 @@
 Gesso is an SDK for building Qt (PySide6) desktop applications on Linux. It
 provides the pieces every application needs but nobody wants to write twice:
 
-- **Design system** — a token contract plus a generic, token-driven stylesheet
-- **Theming** — swappable JSON palettes, with built-in and user overrides
-- **Internationalisation** — JSON translations, locale detection, English fallback
+- **Design system** — a token contract plus a generic, token-driven stylesheet *(planned)*
+- **Theming** — swappable JSON palettes, with built-in and user overrides *(planned)*
+- **Internationalisation** — JSON catalogs, language detection, three-layer override, English fallback
 - **Configuration** — a schema-typed, atomic store supporting JSON, TOML and YAML
 - **Widget library** — standard Qt widgets styled by the design system *(planned)*
 - **Application shell** — window bootstrap, navigation, status bar *(planned)*
@@ -28,8 +28,9 @@ everything painted on top of it consistent.
 
 ## Status
 
-Pre-alpha. The core and configuration layers are being built first; see
-[`docs/`](docs/) for the design.
+Pre-alpha. The core, configuration and internationalisation layers are in
+place; the Qt tiers have not been started. See [`docs/`](docs/) for the design
+and the [roadmap](docs/roadmap.md) for what is next.
 
 ## Installation
 

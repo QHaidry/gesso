@@ -1,0 +1,21 @@
+{
+  "gesso": {
+    "button": {
+      "ok": "OK",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "yes": "Oui",
+      "no": "Non",
+      "apply": "Appliquer",
+      "reset": "Réinitialiser"
+    },
+    "dialog": {
+      "confirm_title": "Veuillez confirmer"
+    },
+    "title": {
+      "error": "Erreur",
+      "warning": "Avertissement",
+      "information": "Information"
+    }
+  }
+}

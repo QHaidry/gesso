@@ -62,7 +62,7 @@ installed must never fail.
 | `gesso.config.codecs` | `Codec`, `JsonCodec`, `TomlCodec`, `YamlCodec`, the registry | Available |
 | `gesso.config.schema` | `Option`, `Section`, `Schema` — typing and validation | Available |
 | `gesso.config.store` | `ConfigStore` — discovery, atomic writes, conversion | Available |
-| `gesso.i18n` | Translation loading, locale detection, fallback | Planned |
+| `gesso.i18n` | Catalogs, language detection, direction, fallback | Available |
 | `gesso.ui.theme` | Design tokens, `ThemeManager`, theming | Planned |
 | `gesso.ui.widgets` | The standard widget library | Planned |
 | `gesso.ui.app` | `run_app()`, `AppShell` | Planned |

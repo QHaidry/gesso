@@ -44,6 +44,12 @@ docs = [
 [tool.setuptools]
 package-dir = { "" = "src" }
 packages = { find = { where = ["src"] } }
+include-package-data = true
+
+[tool.setuptools.package-data]
+# py.typed advertises PEP 561 typing support; the locale catalogs are data the
+# package reads at runtime, so both must ship in the wheel.
+gesso = ["py.typed", "i18n/locales/*.json"]
 
 [tool.setuptools.dynamic]
 version = { attr = "gesso.__version__" }
