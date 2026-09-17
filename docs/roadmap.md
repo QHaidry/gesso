@@ -12,26 +12,25 @@ What is built, what is next, and — importantly — what Gesso will not do.
 | Translation catalogs, language detection, direction | `gesso.i18n` |
 | Token contract, base stylesheet, palettes, theming | `gesso.ui.theme` |
 | SVG icons rendered and tinted at runtime | `gesso.ui.icons` |
+| Widget primitives, styled by object name | `gesso.ui.widgets` |
 
 ## Next
 
 The order is deliberate: each tier is proven by an application before the next
 one is designed.
 
-### 1. Standard widget library — `gesso.ui.widgets`
+### 1. Larger widget composites — `gesso.ui.widgets`
 
-The largest piece, and the one that does not exist in any form today:
+The primitives are in. What is deliberately *not* here:
 
-- **Primitives** — `IconButton`, `ToggleButton`, `SegmentedControl`, `Card`,
-  `PageHeader`, `SettingRow`, `SearchField`, `Callout`
 - **Composites** — `NavSidebar`, `SettingsExplorer`, `ThumbnailGrid`,
-  `EmptyState`, `StatusBar`
+  `StatusBar`, `SearchField`, `Callout`
 - **Dialogs** — `info`, `warning`, `critical`, `confirm`, `FormDialog`
 - **`SettingsPage`** — driven by a schema, so declaring your options gives you a
   complete settings UI
-
-The dialogs and buttons will read their labels through `gesso.i18n`, which is
-why that tier came first.
+These wait for a second application to need the same shape. The primitives
+were safe to build because the base stylesheet already named them; composites
+would mean designing an API for a shape nobody has built yet.
 
 ### 2. Application shell — `gesso.ui.app`
 

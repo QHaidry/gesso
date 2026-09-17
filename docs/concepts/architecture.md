@@ -65,7 +65,7 @@ installed must never fail.
 | `gesso.i18n` | Catalogs, language detection, direction, fallback | Available |
 | `gesso.ui.theme` | Token contract, base stylesheet, `ThemeManager` | Available |
 | `gesso.ui.icons` | SVG icons, runtime tinting, `IconRegistry` | Available |
-| `gesso.ui.widgets` | The standard widget library | Planned |
+| `gesso.ui.widgets` | Card, PageHeader, SettingRow, Icon/Toggle/Segmented buttons | Available |
 | `gesso.ui.app` | `run_app()`, `AppShell` | Planned |
 
 See the [Roadmap](../roadmap.md) for what lands when.
