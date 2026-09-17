@@ -50,6 +50,7 @@ nav:
       - Configuration: concepts/configuration.md
       - Internationalisation: concepts/internationalisation.md
       - Design system: concepts/design-system.md
+      - Icons: concepts/icons.md
   - Guides:
       - Choosing a config format: guides/config-formats.md
       - Defining a schema: guides/defining-a-schema.md
@@ -62,6 +63,7 @@ nav:
       - gesso.config: reference/config.md
       - gesso.i18n: reference/i18n.md
       - gesso.ui.theme: reference/theme.md
+      - gesso.ui.icons: reference/icons.md
   - Roadmap: roadmap.md
   - Contributing: contributing.md
 

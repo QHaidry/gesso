@@ -11,21 +11,14 @@ What is built, what is next, and — importantly — what Gesso will not do.
 | JSON / TOML / YAML codecs, conversion | `gesso.config` |
 | Translation catalogs, language detection, direction | `gesso.i18n` |
 | Token contract, base stylesheet, palettes, theming | `gesso.ui.theme` |
+| SVG icons rendered and tinted at runtime | `gesso.ui.icons` |
 
 ## Next
 
 The order is deliberate: each tier is proven by an application before the next
 one is designed.
 
-### 1. Icon set with runtime tinting — `gesso.ui.icons`
-
-- SVG icons rendered and tinted at runtime from theme tokens, so one asset
-  serves every theme
-- A registry, so an application can add its own without forking the set
-The stylesheet already points at an icons directory for the spin-box arrows;
-this fills it out and gives widgets a themed `make_icon()`.
-
-### 2. Standard widget library — `gesso.ui.widgets`
+### 1. Standard widget library — `gesso.ui.widgets`
 
 The largest piece, and the one that does not exist in any form today:
 
@@ -40,25 +33,25 @@ The largest piece, and the one that does not exist in any form today:
 The dialogs and buttons will read their labels through `gesso.i18n`, which is
 why that tier came first.
 
-### 3. Application shell — `gesso.ui.app`
+### 2. Application shell — `gesso.ui.app`
 
 - `run_app(spec, window_factory)`: `QApplication` metadata, high-DPI, palette
   *and* stylesheet, translator installation, exception hook
 - `AppShell`: collapsible sidebar, navigation, content stack, status bar
 - System tray and desktop notifications
 
-### 4. Project generator
+### 3. Project generator
 
 `gesso new myapp` — a scaffold with all of the above already wired: entry points,
 packaging, CI, tests, theme, translations and a settings schema, so a new project
 starts from a working application rather than an empty directory.
 
-### 5. Migrations
+### 4. Migrations
 
 A declarative schema-version mechanism, replacing the explicit
 [manual migrations](guides/validating-and-migrating.md#migrating) used today.
 
-### 6. An optional internationalisation backend
+### 5. An optional internationalisation backend
 
 Two things `gesso.i18n` deliberately does not do, because doing them properly
 needs real CLDR data and guessing is worse than waiting:
