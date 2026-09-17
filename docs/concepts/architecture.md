@@ -66,7 +66,7 @@ installed must never fail.
 | `gesso.ui.theme` | Token contract, base stylesheet, `ThemeManager` | Available |
 | `gesso.ui.icons` | SVG icons, runtime tinting, `IconRegistry` | Available |
 | `gesso.ui.widgets` | Card, PageHeader, SettingRow, Icon/Toggle/Segmented buttons | Available |
-| `gesso.ui.app` | `run_app()`, `AppShell` | Planned |
+| `gesso.ui.app` | `run_app()`, `AppShell` — bootstrap and application window | Available |
 
 See the [Roadmap](../roadmap.md) for what lands when.
 

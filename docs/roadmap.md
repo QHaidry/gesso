@@ -13,44 +13,42 @@ What is built, what is next, and — importantly — what Gesso will not do.
 | Token contract, base stylesheet, palettes, theming | `gesso.ui.theme` |
 | SVG icons rendered and tinted at runtime | `gesso.ui.icons` |
 | Widget primitives, styled by object name | `gesso.ui.widgets` |
+| Application bootstrap and window shell | `gesso.ui.app` |
 
 ## Next
 
 The order is deliberate: each tier is proven by an application before the next
 one is designed.
 
-### 1. Larger widget composites — `gesso.ui.widgets`
+### 1. Project generator
+
+The library is complete enough to build an application with, and this is the
+piece that turns it from a library into an SDK.
+
+`gesso new myapp` — a scaffold with everything already wired: entry points,
+packaging, CI, tests, a theme, translations and a settings schema, so a new
+project starts from a working application rather than an empty directory.
+
+### 2. Larger widget composites — `gesso.ui.widgets`
 
 The primitives are in. What is deliberately *not* here:
 
 - **Composites** — `NavSidebar`, `SettingsExplorer`, `ThumbnailGrid`,
-  `StatusBar`, `SearchField`, `Callout`
+  `SearchField`, `Callout`
 - **Dialogs** — `info`, `warning`, `critical`, `confirm`, `FormDialog`
 - **`SettingsPage`** — driven by a schema, so declaring your options gives you a
   complete settings UI
-These wait for a second application to need the same shape. The primitives
-were safe to build because the base stylesheet already named them; composites
-would mean designing an API for a shape nobody has built yet.
 
-### 2. Application shell — `gesso.ui.app`
+These wait for a second application to need the same shape. The primitives were
+safe to build because the base stylesheet already named them; composites would
+mean designing an API for a shape nobody has built yet.
 
-- `run_app(spec, window_factory)`: `QApplication` metadata, high-DPI, palette
-  *and* stylesheet, translator installation, exception hook
-- `AppShell`: collapsible sidebar, navigation, content stack, status bar
-- System tray and desktop notifications
-
-### 3. Project generator
-
-`gesso new myapp` — a scaffold with all of the above already wired: entry points,
-packaging, CI, tests, theme, translations and a settings schema, so a new project
-starts from a working application rather than an empty directory.
-
-### 4. Migrations
+### 3. Migrations
 
 A declarative schema-version mechanism, replacing the explicit
 [manual migrations](guides/validating-and-migrating.md#migrating) used today.
 
-### 5. An optional internationalisation backend
+### 4. An optional internationalisation backend
 
 Two things `gesso.i18n` deliberately does not do, because doing them properly
 needs real CLDR data and guessing is worse than waiting:

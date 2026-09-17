@@ -14,6 +14,7 @@ application ends up with a yellow tooltip.
 from __future__ import annotations
 
 import json
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
@@ -23,6 +24,8 @@ from PySide6.QtGui import QColor, QPalette
 
 from . import qss
 from .tokens import BASE_CONTRACT, TokenContract
+
+logger = logging.getLogger("gesso.ui.theme")
 
 __all__ = [
     "BUILTIN_PALETTES_DIR",
@@ -307,8 +310,14 @@ class ThemeManager(QObject):
             return False
 
         requested = name or self._default
-        if not self.exists(requested) and self.exists(self._default):
-            requested = self._default
+        if not self.exists(requested):
+            # Fall back to the default, and then to whatever is installed: an
+            # application shipping its own palettes has no "dark" for the
+            # default to name, and a deleted theme file must not leave it
+            # wearing a neutral palette nobody chose.
+            fallback = self._default if self.exists(self._default) else self.names()[0]
+            logger.debug("theme %r is not installed; falling back to %r", requested, fallback)
+            requested = fallback
 
         theme = self.load(requested)
         try:

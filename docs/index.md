@@ -61,7 +61,7 @@ the primer; Muralis is the mural.
 | Themes & design tokens | `gesso.ui.theme` | :material-check-circle: Available |
 | Icons, tinted at runtime | `gesso.ui.icons` | :material-check-circle: Available |
 | Widget library (primitives) | `gesso.ui.widgets` | :material-check-circle: Available |
-| Application shell & bootstrap | `gesso.ui.app` | :material-progress-clock: Planned |
+| Application shell & bootstrap | `gesso.ui.app` | :material-check-circle: Available |
 
 ## The shape of it
 
