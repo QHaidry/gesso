@@ -149,6 +149,21 @@ from the `QPalette`, not from the stylesheet, so setting only the stylesheet
 leaves those pieces at the platform default — which is how a carefully themed
 application ends up with a yellow tooltip.
 
+### A note on discoverability and deleted themes
+
+Two details that only show up once a real application uses this.
+
+**Seeding.** A user cannot edit a theme they cannot see, so `seed_user_dir()`
+copies the built-in palettes into the user's directory. Copies are only written
+where nothing exists, so an edit is never clobbered — and a later release of an
+application cannot silently undo a customisation. It is opt-in (`seed=True`),
+because an application that wants its palettes to stay read-only should say so.
+
+**Falling back.** `apply()` falls back to the default theme when the requested
+name has no palette installed. Without it, deleting your theme file would leave
+the application wearing a neutral palette nobody chose — the tokens all resolve,
+so nothing looks *broken*, it just looks like a different application.
+
 ## The tier boundary
 
 The token contract and the renderer are **Qt-free**. Substituting tokens into

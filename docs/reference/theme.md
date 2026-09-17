@@ -105,6 +105,7 @@ class ThemeManager(QObject):
         contract: TokenContract | None = None,
         default: str | None = None,
         icons_dir: Path | None = None,
+        seed: bool = False,
         parent: QObject | None = None,
     ) -> None
 ```
@@ -117,6 +118,7 @@ class ThemeManager(QObject):
 | `contract` | The token contract to resolve against |
 | `default` | The theme used when a caller names none |
 | `icons_dir` | Where the stylesheet's icon references point |
+| `seed` | Copy the built-in palettes into `user_dir` on construction, so they can be edited |
 
 | Property | Returns |
 | --- | --- |
@@ -136,14 +138,28 @@ class ThemeManager(QObject):
 | `coverage(name=None)` | `{"explicit": [...], "inherited": [...], "unknown": [...]}` |
 | `stylesheet(name=None)` | The full stylesheet, with `icon_dir` filled in |
 | `palette(theme)` | A matching `QPalette` |
+| `seed_user_dir(overwrite=False)` | Copy the built-in palettes into `user_dir`; returns the paths written |
 | `apply(name=None)` | Apply, returning whether it worked |
+
+### `seed_user_dir`
+
+A user cannot edit a theme they cannot see, so seeding makes the shipped
+palettes discoverable. Copies are only written where nothing exists unless
+`overwrite` is set, which means an edit is never clobbered — and a later release
+of an application cannot silently undo a user's customisation. Failures are
+ignored: a read-only config directory costs the user their copies, not the
+application.
 
 ### `apply`
 
 Sets the stylesheet **and** the palette, and emits `themeChanged` when the
-theme actually changes. Returns `False` — rather than raising — when there is
-no application to style or the stylesheet cannot be rendered: a theme is a
-preference, and a broken one should not stop an application opening.
+theme actually changes. A name with no palette installed falls back to the
+default theme, so a user whose theme file was deleted gets the application's own
+look rather than a neutral one.
+
+Returns `False` — rather than raising — when there is no application to style
+or the stylesheet cannot be rendered: a theme is a preference, and a broken one
+should not stop an application opening.
 
 Re-applying the same theme does not re-emit. Widgets re-tint on a change, and a
 redundant signal would make every application redraw for nothing.

@@ -102,6 +102,7 @@ class ThemeManager(QObject):
         user_dir: The user's overrides, which win over every built-in.
         contract: The token contract to resolve against.
         icons_dir: Where the stylesheet's icon references point.
+        seed: Copy the built-in palettes into ``user_dir`` on construction.
     """
 
     themeChanged = Signal(str)
@@ -115,6 +116,7 @@ class ThemeManager(QObject):
         contract: Optional[TokenContract] = None,
         default: Optional[str] = None,
         icons_dir: Optional[Path] = None,
+        seed: bool = False,
         parent: Optional[QObject] = None,
     ) -> None:
         super().__init__(parent)
@@ -125,6 +127,8 @@ class ThemeManager(QObject):
         self._icons_dir = Path(icons_dir) if icons_dir is not None else ICONS_DIR
         self._default = default or DEFAULT_THEME
         self._current: Optional[Theme] = None
+        if seed:
+            self.seed_user_dir()
 
     # ------------------------------------------------------------------
     # Introspection
@@ -254,17 +258,59 @@ class ThemeManager(QObject):
             palette.setColor(role, color(key, fallback))
         return palette
 
+    def seed_user_dir(self, *, overwrite: bool = False) -> List[Path]:
+        """Copy the built-in palettes into the user's directory.
+
+        A user cannot edit a theme they cannot see, so seeding makes the
+        shipped palettes discoverable. Copies are only written where nothing
+        exists unless *overwrite* is set, which means an edit is never
+        clobbered - and a later release of an application cannot silently undo
+        a user's customisation.
+
+        Returns the paths written. Failures are ignored: a read-only config
+        directory costs the user their copies, not the application.
+        """
+        if self._user_dir is None:
+            return []
+
+        written: List[Path] = []
+        try:
+            self._user_dir.mkdir(parents=True, exist_ok=True)
+        except OSError:
+            return []
+
+        for directory in self._builtin_dirs:
+            if not directory.is_dir():
+                continue
+            for source in sorted(directory.glob("*.json")):
+                target = self._user_dir / source.name
+                if target.exists() and not overwrite:
+                    continue
+                try:
+                    target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+                except OSError:
+                    continue
+                written.append(target)
+        return written
+
     def apply(self, name: Optional[str] = None) -> bool:
         """Apply a theme, returning whether it worked.
 
-        Returns ``False`` when there is no application to style or the
-        stylesheet cannot be rendered. It does not raise: a theme is a
-        preference, and a broken one should not stop the application opening.
+        A name with no palette installed falls back to the default theme, so a
+        user whose theme file was deleted gets the application's own look
+        rather than a neutral one. Returns ``False`` when there is no
+        application to style or the stylesheet cannot be rendered; it does not
+        raise, because a theme is a preference and a broken one should not stop
+        the application opening.
         """
         if self._app is None:
             return False
 
-        theme = self.load(name)
+        requested = name or self._default
+        if not self.exists(requested) and self.exists(self._default):
+            requested = self._default
+
+        theme = self.load(requested)
         try:
             sheet = self.stylesheet(theme.name)
         except qss.QssError:

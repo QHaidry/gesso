@@ -44,19 +44,28 @@ QLabel#brandSubtitle { color: ${text_muted};  font-size: 11px; padding: 0 8px 14
 
 QLabel#emptyState { color: ${text_muted}; font-size: 13px; }
 
+/* A hero title, one step above a page header. */
+QLabel#displayTitle { color: ${text_strong}; font-size: 26px; font-weight: 700; }
+
+/* Links are a design-system concept, not an application one. */
+QLabel#link { color: ${accent}; text-decoration: underline; }
+
 /* ================= Surfaces ================= */
 QWidget#contentStack { background-color: ${window}; }
 
-QFrame#sidebar   { background-color: ${panel}; border-right: 1px solid ${border}; }
-QFrame#card      { background-color: ${card};  border: 1px solid ${border}; border-radius: 10px; }
-QFrame#panel     { background-color: ${panel}; border: 1px solid ${border}; border-radius: 10px; }
-QFrame#thumbFrame {
+/* Surfaces are matched by object name alone, not by widget type: any widget
+   that opts into the name gets the surface, so a QLabel can be a card just as
+   a QFrame can. The name is the contract. */
+#sidebar   { background-color: ${panel}; border-right: 1px solid ${border}; }
+#card      { background-color: ${card};  border: 1px solid ${border}; border-radius: 10px; }
+#panel     { background-color: ${panel}; border: 1px solid ${border}; border-radius: 10px; }
+#thumbFrame {
     background-color: ${card};
     border: 1px solid ${border};
     border-radius: 10px;
 }
-QFrame#thumbFrame:hover { background-color: ${card_hover}; border-color: ${accent}; }
-QLabel#thumbInfo { color: ${text_muted}; font-size: 11px; padding: 2px; }
+#thumbFrame:hover { background-color: ${card_hover}; border-color: ${accent}; }
+#thumbInfo { color: ${text_muted}; font-size: 11px; padding: 2px; }
 
 /* ================= Buttons ================= */
 QPushButton {
