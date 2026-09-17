@@ -1,0 +1,10 @@
+"""Shared test setup.
+
+Qt runs headless. The offscreen platform needs no display, so these tests
+behave the same on a desktop and in CI — and the variable has to be set before
+Qt is imported anywhere, which is why it is the first thing this module does.
+"""
+
+import os
+
+os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")

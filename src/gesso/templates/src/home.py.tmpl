@@ -1,0 +1,68 @@
+"""The first page.
+
+A greeting taken from the configuration, and a switch that changes it. Between
+them they touch the config store, the widget library and the theming — and the
+switch's label comes from the translations rather than being hard-coded.
+"""
+
+from __future__ import annotations
+
+from typing import Optional
+
+from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
+
+from gesso.config import ConfigStore
+from gesso.ui.widgets import Card, ToggleButton
+
+from ${package}.app import context, t
+from ${package}.config import store
+
+
+class HomePage(QWidget):
+    """A greeting, and a switch that makes it loud."""
+
+    def __init__(
+        self,
+        config: Optional[ConfigStore] = None,
+        parent: Optional[QWidget] = None,
+    ) -> None:
+        super().__init__(parent)
+
+        # Taking the configuration as an argument is what makes this page
+        # testable: a test hands it one in a temporary directory.
+        self._config = config if config is not None else store(context())
+
+        card = Card()
+
+        self.greeting = QLabel()
+        self.greeting.setObjectName("pageHeader")
+        card.body.addWidget(self.greeting)
+
+        self.excited = ToggleButton(t("app.action.excited"))
+        # Set before connecting, so reading a stored value is not mistaken for
+        # the user choosing something.
+        self.excited.setChecked(bool(self._config.get("general.excited")))
+        self.excited.toggled.connect(self._on_excited)
+        card.body.addWidget(self.excited)
+
+        layout = QVBoxLayout(self)
+        layout.addWidget(card)
+        layout.addStretch()
+
+        self.refresh()
+
+    def _on_excited(self, excited: bool) -> None:
+        # The schema declares this a bool, so a bool is what gets stored — and
+        # it stays a bool if the file is later rewritten as TOML or YAML.
+        self._config.set("general.excited", excited)
+        self._config.save()
+        self.refresh()
+
+    def refresh(self) -> None:
+        """Rebuild the greeting from the stored settings."""
+        text = str(self._config.get("general.greeting")) * int(
+            self._config.get("general.repeat")
+        )
+        if self._config.get("general.excited"):
+            text = text.upper() + "!"
+        self.greeting.setText(text)

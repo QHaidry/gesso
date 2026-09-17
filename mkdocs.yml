@@ -68,6 +68,7 @@ nav:
       - gesso.ui.icons: reference/icons.md
       - gesso.ui.widgets: reference/widgets.md
       - gesso.ui.app: reference/app.md
+      - gesso.generator: reference/generator.md
   - Roadmap: roadmap.md
   - Contributing: contributing.md
 

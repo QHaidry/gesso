@@ -1,0 +1,43 @@
+"""The entry point.
+
+``build`` is the part that is yours: everything above it is start-up that every
+Qt application does slightly differently, and this one gets for free.
+"""
+
+from __future__ import annotations
+
+import sys
+from typing import Optional, Sequence
+
+from gesso.ui.app import AppShell, run_app
+
+from ${package}.app import APP, THEMES_DIR, t, user_themes_dir
+
+
+def build(shell: AppShell) -> None:
+    """Populate the window."""
+    from ${package}.home import HomePage
+
+    shell.set_brand(APP.display_name, APP.description)
+    shell.add_page(
+        "home",
+        t("app.page.home"),
+        HomePage(),
+        comment=t("app.page.home_comment"),
+        icon="check",
+    )
+
+
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    return run_app(
+        APP,
+        build,
+        argv=argv,
+        theme="default",
+        builtin_theme_dirs=[THEMES_DIR],
+        user_theme_dir=user_themes_dir(),
+    )
+
+
+if __name__ == "__main__":
+    sys.exit(main())

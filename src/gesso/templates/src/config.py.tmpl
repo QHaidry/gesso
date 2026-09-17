@@ -1,0 +1,40 @@
+"""What ${name} stores, declared once.
+
+Each option carries its type, its default and any constraints, and Gesso does
+the rest: the file format, coercion, validation and atomic writes. Users can
+keep their settings as JSON, TOML or YAML, whichever they prefer to edit.
+
+Add a setting by adding a line here. A key missing from someone's file is
+filled from the default, so nothing needs migrating.
+"""
+
+from __future__ import annotations
+
+from gesso.config import ConfigStore, Option, Schema, Section
+
+SCHEMA = Schema(
+    [
+        Section(
+            "general",
+            title="General",
+            description="How ${name} behaves.",
+            options=(
+                Option("greeting", str, "Hello", "The word to greet with."),
+                Option(
+                    "repeat",
+                    int,
+                    1,
+                    "How many times to greet.",
+                    minimum=1,
+                    maximum=10,
+                ),
+                Option("excited", bool, False, "Add some emphasis."),
+            ),
+        )
+    ]
+)
+
+
+def store(context) -> ConfigStore:
+    """The application's configuration, discovered and loaded."""
+    return ConfigStore.for_app(SCHEMA, context).load()

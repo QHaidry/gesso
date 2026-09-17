@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import json
 
-import pytest
-
 from gesso.core import AppContext, AppSpec
 from gesso.core.paths import AppPaths
 from gesso.i18n import DirectorySource, MappingSource, Translator

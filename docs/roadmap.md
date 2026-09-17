@@ -14,22 +14,14 @@ What is built, what is next, and — importantly — what Gesso will not do.
 | SVG icons rendered and tinted at runtime | `gesso.ui.icons` |
 | Widget primitives, styled by object name | `gesso.ui.widgets` |
 | Application bootstrap and window shell | `gesso.ui.app` |
+| Project generator: a working scaffold | `gesso.generator` |
 
 ## Next
 
 The order is deliberate: each tier is proven by an application before the next
 one is designed.
 
-### 1. Project generator
-
-The library is complete enough to build an application with, and this is the
-piece that turns it from a library into an SDK.
-
-`gesso new myapp` — a scaffold with everything already wired: entry points,
-packaging, CI, tests, a theme, translations and a settings schema, so a new
-project starts from a working application rather than an empty directory.
-
-### 2. Larger widget composites — `gesso.ui.widgets`
+### 1. Larger widget composites — `gesso.ui.widgets`
 
 The primitives are in. What is deliberately *not* here:
 
@@ -43,12 +35,12 @@ These wait for a second application to need the same shape. The primitives were
 safe to build because the base stylesheet already named them; composites would
 mean designing an API for a shape nobody has built yet.
 
-### 3. Migrations
+### 2. Migrations
 
 A declarative schema-version mechanism, replacing the explicit
 [manual migrations](guides/validating-and-migrating.md#migrating) used today.
 
-### 4. An optional internationalisation backend
+### 3. An optional internationalisation backend
 
 Two things `gesso.i18n` deliberately does not do, because doing them properly
 needs real CLDR data and guessing is worse than waiting:

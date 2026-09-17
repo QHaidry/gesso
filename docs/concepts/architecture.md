@@ -67,6 +67,7 @@ installed must never fail.
 | `gesso.ui.icons` | SVG icons, runtime tinting, `IconRegistry` | Available |
 | `gesso.ui.widgets` | Card, PageHeader, SettingRow, Icon/Toggle/Segmented buttons | Available |
 | `gesso.ui.app` | `run_app()`, `AppShell` — bootstrap and application window | Available |
+| `gesso.generator` | `gesso new` — scaffolding a working project | Available |
 
 See the [Roadmap](../roadmap.md) for what lands when.
 

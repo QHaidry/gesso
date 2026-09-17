@@ -1,0 +1,50 @@
+# ${name}
+
+${description}
+
+Built with [Gesso](https://github.com/quoxiom/gesso).
+
+## Getting started
+
+Gesso is not published on PyPI yet, so install it from a checkout first:
+
+```bash
+pip install -e /path/to/gesso
+```
+
+Then install this project:
+
+```bash
+pip install -e ".[dev]"
+```
+
+## Run it
+
+```bash
+${app_id}
+```
+
+## What is already wired
+
+- **Application identity** — `src/${package}/app.py` declares the name, id and
+  version once, and every path derives from it (`gesso.core`)
+- **Typed configuration** — `src/${package}/config.py` declares each setting's
+  type, default and constraints; Gesso handles the file format, so people can
+  keep JSON, TOML or YAML (`gesso.config`)
+- **Internationalisation** — `src/${package}/locales/en.json`, with the user's
+  overrides read from their own config directory (`gesso.i18n`)
+- **Theming** — `src/${package}/themes/default.json`, a *partial* palette:
+  only the tokens worth changing are listed, and the rest come from the
+  contract (`gesso.ui.theme`)
+- **A window** — `run_app` and a navigation shell, so there is somewhere to put
+  your pages (`gesso.ui.app`)
+
+## Tests
+
+```bash
+pytest
+```
+
+## License
+
+MIT — ${org}

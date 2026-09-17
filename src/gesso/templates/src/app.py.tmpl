@@ -1,0 +1,68 @@
+"""The application's identity, in one place.
+
+Everything else derives from this: the configuration directory, the window
+title, where translations are looked up, and the palette. Renaming the
+application is a change here rather than a search for the old name.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any, Optional
+
+from gesso.core import AppContext, AppSpec
+from gesso.core.paths import AppPaths
+from gesso.i18n import Translator
+
+APP = AppSpec(
+    name="${name}",
+    app_id="${app_id}",
+    org="${org}",
+    version="${version}",
+    description="${description}",
+)
+
+PACKAGE_DIR = Path(__file__).parent
+LOCALES_DIR = PACKAGE_DIR / "locales"
+THEMES_DIR = PACKAGE_DIR / "themes"
+
+_context: Optional[AppContext] = None
+_translator: Optional[Translator] = None
+
+
+def context() -> AppContext:
+    """The application's directories, resolved from its id."""
+    global _context
+    if _context is None:
+        _context = AppContext(APP)
+    return _context
+
+
+def use_paths(paths: AppPaths) -> AppContext:
+    """Point the application at isolated directories, and forget cached state.
+
+    This is what a test uses to keep a run out of the developer's real
+    ``~/.config``.
+    """
+    global _context, _translator
+    _context = AppContext(APP, paths)
+    _translator = None
+    return _context
+
+
+def translator() -> Translator:
+    """The application's translator, built on first use."""
+    global _translator
+    if _translator is None:
+        _translator = Translator.for_app(context(), locale_dir=LOCALES_DIR)
+    return _translator
+
+
+def t(key: str, **kwargs: Any) -> str:
+    """Translate a dotted key using the application's translator."""
+    return translator().t(key, **kwargs)
+
+
+def user_themes_dir() -> Path:
+    """Where the user's theme overrides live."""
+    return context().paths.subdir("config", "themes")

@@ -1,0 +1,59 @@
+"""A first test, so the project starts green.
+
+``qapp`` comes from pytest-qt; ``conftest.py`` puts Qt on the offscreen
+platform, so this needs no display.
+"""
+
+from __future__ import annotations
+
+import pytest
+
+from gesso.config import ConfigError, ConfigStore
+
+from ${package}.app import APP, t
+from ${package}.config import SCHEMA
+from ${package}.home import HomePage
+
+
+def test_the_application_has_an_identity():
+    assert APP.app_id == "${app_id}"
+    assert APP.name
+    assert APP.version
+
+
+def test_the_defaults_satisfy_their_own_schema():
+    # A schema whose defaults break its own rules would fail on every fresh
+    # configuration, which is worth knowing before you add more options.
+    assert SCHEMA.validate(SCHEMA.defaults()) == []
+
+
+def test_the_translations_load():
+    # A missing key comes back as the key itself, so this catches a typo.
+    assert t("app.page.home") != "app.page.home"
+
+
+def test_a_constraint_is_enforced(tmp_path):
+    config = ConfigStore.for_format(SCHEMA, tmp_path, "json").load()
+
+    with pytest.raises(ConfigError):
+        config.set("general.repeat", 99)  # above the declared maximum
+
+
+def test_the_configuration_is_stored_with_real_types(tmp_path):
+    config = ConfigStore.for_format(SCHEMA, tmp_path, "json").load()
+    config.set("general.repeat", "3")
+    config.save()
+
+    # A string in, an integer out — the schema does the coercion, so the file
+    # survives being rewritten as TOML.
+    assert config.get("general.repeat") == 3
+
+
+def test_the_home_page_greets(qapp, tmp_path):
+    config = ConfigStore.for_format(SCHEMA, tmp_path, "json").load()
+    page = HomePage(config=config)
+
+    assert page.greeting.text() == "Hello"
+
+    page.excited.setChecked(True)
+    assert page.greeting.text() == "HELLO!"

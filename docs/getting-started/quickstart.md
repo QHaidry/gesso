@@ -3,6 +3,25 @@
 Five minutes, one file, a working application that remembers its settings — in
 whichever format you prefer.
 
+## The fast way: `gesso new`
+
+```bash
+pip install -e /path/to/gesso        # Gesso is not on PyPI yet
+gesso new myapp
+cd myapp
+pip install -e ".[dev]"
+pytest
+python -m myapp.main
+```
+
+That writes a **working** application — config schema, palette, translations, a
+window and a passing test — so you start from something that runs rather than
+an empty directory. See [the generator](../reference/generator.md) for what is
+in it.
+
+The rest of this page builds the same foundations by hand, which is worth
+reading if you want to know what the scaffold is doing.
+
 ## 1. Write the application
 
 Save this as `myapp.py`:
