@@ -47,6 +47,30 @@ the primer; Muralis is the mural.
 
     [:octicons-arrow-right-24: Roadmap](roadmap.md)
 
+-   :material-sign-direction:{ .lg .middle } **Want to be told where to start?**
+
+    ---
+
+    Which pages to read, in what order, for whatever you are trying to do.
+
+    [:octicons-arrow-right-24: The guide](guide.md)
+
+-   :material-school-outline:{ .lg .middle } **Learn by doing?**
+
+    ---
+
+    Six self-contained walkthroughs you can run — one per tier.
+
+    [:octicons-arrow-right-24: Tutorials](tutorials/index.md)
+
+-   :material-code-braces:{ .lg .middle } **Learn by reading code?**
+
+    ---
+
+    Four working applications, from a CLI up to a full desktop app.
+
+    [:octicons-arrow-right-24: Examples](examples/index.md)
+
 </div>
 
 ---

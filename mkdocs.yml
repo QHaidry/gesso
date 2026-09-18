@@ -41,9 +41,18 @@ theme:
 
 nav:
   - Home: index.md
+  - The guide: guide.md
   - Getting started:
       - Installation: getting-started/installation.md
       - Quickstart: getting-started/quickstart.md
+  - Tutorials:
+      - Overview: tutorials/index.md
+      - Store a setting: tutorials/config.md
+      - Translate an application: tutorials/i18n.md
+      - Make a palette: tutorials/theming.md
+      - Ship your own icons: tutorials/icons.md
+      - Build a settings pane: tutorials/widgets.md
+      - Build a windowed application: tutorials/shell.md
   - Concepts:
       - Architecture: concepts/architecture.md
       - Application identity: concepts/application-identity.md
@@ -60,6 +69,9 @@ nav:
   - Examples:
       - Overview: examples/index.md
       - Hello, Gesso (CLI): examples/hello-cli.md
+      - Basket (CLI): examples/basket.md
+      - Gallery (GUI): examples/gallery.md
+      - Tracker (GUI): examples/tracker.md
   - Reference:
       - gesso.core: reference/core.md
       - gesso.config: reference/config.md
