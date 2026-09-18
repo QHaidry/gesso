@@ -1,0 +1,62 @@
+{
+  "basket": {
+    "app": {
+      "tagline": "Une liste de courses qui retient vos préférences."
+    },
+    "cli": {
+      "description": "Une liste de courses avec des préférences typées et des traductions.",
+      "config_home": "Remplace $XDG_CONFIG_HOME (par défaut : ./basket-home)",
+      "data_home": "Remplace $XDG_DATA_HOME (par défaut : ./basket-home)",
+      "language": "Force une langue pour cette exécution, en ignorant la préférence"
+    },
+    "cmd": {
+      "add": "Ajouter un article à la liste",
+      "list": "Afficher la liste",
+      "remove": "Retirer un article de la liste",
+      "clear": "Vider la liste",
+      "config": "Afficher ou modifier les préférences"
+    },
+    "list": {
+      "heading": "Liste de courses",
+      "empty": "Votre liste est vide. Ajoutez un article avec `basket add milk`.",
+      "count": {
+        "one": "{count} article sur la liste",
+        "other": "{count} articles sur la liste"
+      },
+      "total": "Total : {total}",
+      "names": {
+        "one": "1 article, trié par nom.",
+        "other": "{count} articles, triés par nom."
+      }
+    },
+    "add": {
+      "done": {
+        "one": "Ajouté {name}. Il y a 1 article sur la liste.",
+        "other": "Ajouté {name}. Il y a {count} articles sur la liste."
+      },
+      "duplicate": "{name} est déjà sur la liste.",
+      "bad_name": "« {name} » n'est pas un nom d'article utilisable.",
+      "full": "La liste est pleine ({limit} articles). Augmentez list.max_items pour en ajouter."
+    },
+    "remove": {
+      "done": "{name} a été retiré.",
+      "missing": "{name} n'est pas sur la liste."
+    },
+    "clear": {
+      "done": {
+        "one": "1 article supprimé.",
+        "other": "{count} articles supprimés."
+      },
+      "already_empty": "La liste était déjà vide."
+    },
+    "config": {
+      "heading": "Préférences",
+      "changed": "{key} défini sur {value}.",
+      "converted": "Préférences réécrites en {format}.",
+      "source": "Les préférences sont dans {path}"
+    },
+    "problem": {
+      "heading": "Vos préférences posent problème :"
+    }
+  }
+}

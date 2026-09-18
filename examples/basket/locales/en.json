@@ -1,0 +1,62 @@
+{
+  "basket": {
+    "app": {
+      "tagline": "A grocery list that remembers your settings."
+    },
+    "cli": {
+      "description": "A grocery list with typed settings and translations.",
+      "config_home": "Stands in for $XDG_CONFIG_HOME (default: ./basket-home)",
+      "data_home": "Stands in for $XDG_DATA_HOME (default: ./basket-home)",
+      "language": "Force a language for this run, ignoring the setting"
+    },
+    "cmd": {
+      "add": "Put something on the list",
+      "list": "Print the list",
+      "remove": "Take something off the list",
+      "clear": "Empty the list",
+      "config": "Show or change the settings"
+    },
+    "list": {
+      "heading": "Shopping list",
+      "empty": "Your list is empty. Add something with `basket add milk`.",
+      "count": {
+        "one": "{count} item on the list",
+        "other": "{count} items on the list"
+      },
+      "total": "Total: {total}",
+      "names": {
+        "one": "1 item, sorted by name.",
+        "other": "{count} items, sorted by name."
+      }
+    },
+    "add": {
+      "done": {
+        "one": "Added {name}. There is 1 item on the list.",
+        "other": "Added {name}. There are {count} items on the list."
+      },
+      "duplicate": "{name} is already on the list.",
+      "bad_name": "'{name}' is not a usable name for an item.",
+      "full": "The list is full ({limit} items). Raise list.max_items to add more."
+    },
+    "remove": {
+      "done": "Removed {name}.",
+      "missing": "{name} is not on the list."
+    },
+    "clear": {
+      "done": {
+        "one": "Cleared 1 item.",
+        "other": "Cleared {count} items."
+      },
+      "already_empty": "The list was already empty."
+    },
+    "config": {
+      "heading": "Settings",
+      "changed": "Set {key} to {value}.",
+      "converted": "Rewrote the settings as {format}.",
+      "source": "Settings live in {path}"
+    },
+    "problem": {
+      "heading": "There are problems with your settings:"
+    }
+  }
+}
