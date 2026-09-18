@@ -1,0 +1,25 @@
+{
+  "name": "Midnight",
+  "description": "Tracker's own palette. Deliberately partial: the contract supplies anything a palette leaves out, so this one only states what it wants to change.",
+  "colors": {
+    "window": "#15161e",
+    "panel": "#1b1d27",
+    "card": "#22242f",
+    "card_hover": "#2b2e3b",
+    "nav_active_bg": "#2b2e3b",
+    "input_bg": "#1f212b",
+    "status_bg": "#1b1d27",
+
+    "text_strong": "#eef1ff",
+    "text": "#c8cce0",
+    "text_muted": "#8a8fa8",
+
+    "accent": "#7aa2f7",
+    "accent_hover": "#94b6ff",
+    "accent_text": "#101223",
+
+    "border": "#2b2e3b",
+    "focus_border": "#7aa2f7",
+    "selection": "#3b4a76"
+  }
+}

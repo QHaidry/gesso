@@ -18,7 +18,7 @@ from typing import Any, Callable, Optional, Sequence
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
 
 from gesso.core.app import AppSpec
 from gesso.i18n import detect_language, is_rtl
@@ -155,6 +155,14 @@ def run_app(
     window = build(shell) if build is not None else None
     if window is None:
         window = shell
+    elif not isinstance(window, QWidget):
+        # The documented contract is "return a window to use instead of the
+        # shell, or nothing". Anything else is a mistake, and saying so beats
+        # the AttributeError that `window.show()` would otherwise raise.
+        raise TypeError(
+            f"build returned {type(window).__name__}, but run_app expects a "
+            f"QWidget to show, or None to use the shell"
+        )
     window.show()
 
     return app.exec()

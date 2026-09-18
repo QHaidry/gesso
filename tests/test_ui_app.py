@@ -382,3 +382,53 @@ def test_the_shell_only_uses_object_names_the_stylesheet_styles(shell, themes):
     sheet = themes.stylesheet("dark")
     missing = sorted(name for name in declared if f"#{name}" not in sheet)
     assert missing == [], f"these object names are not styled: {missing}"
+
+
+# ----------------------------------------------------------------------
+# Retitling, for changing language
+# ----------------------------------------------------------------------
+
+
+def test_a_page_can_be_retitled(shell):
+    shell.add_page("home", "Home", QWidget(), comment="First")
+
+    assert shell.set_page_title("home", "Accueil", "Premier") is True
+
+    assert shell.page("home").title == "Accueil"
+    assert shell.header("home").title_label.text() == "Accueil"
+    assert shell.header("home").comment_label.text() == "Premier"
+    # The navigation entry too — a window retitled in two places out of three is
+    # worse than one not retitled at all.
+    assert [b for b in shell.findChildren(QPushButton) if b.text() == "Accueil"]
+
+
+def test_retitling_keeps_the_comment_it_already_had(shell):
+    shell.add_page("home", "Home", QWidget(), comment="First")
+    shell.set_page_title("home", "Accueil")
+    assert shell.header("home").comment_label.text() == "First"
+    assert shell.page("home").comment == "First"
+
+
+def test_retitling_an_unknown_page_is_refused(shell):
+    assert shell.set_page_title("nowhere", "Nowhere") is False
+
+
+def test_the_shell_retranslates_its_own_strings(spec):
+    shell = AppShell(spec, translate=lambda key, **kwargs: f"<{key}>")
+    shell.drawer_button.setToolTip("something else")
+    shell.retranslate()
+    assert shell.drawer_button.toolTip() == "<gesso.shell.toggle_navigation>"
+
+
+def test_run_app_refuses_a_build_that_returns_something_other_than_a_widget(
+    monkeypatch, qapp, spec
+):
+    """A non-widget return is a mistake, and the message should say so.
+
+    Without this the failure is `'dict' object has no attribute 'show'` from
+    deep inside Qt's start-up, which names neither the cause nor the caller.
+    """
+    monkeypatch.setattr(QApplication, "exec", lambda self: 0)
+
+    with pytest.raises(TypeError, match="expects a QWidget"):
+        run_app(spec, lambda shell: {"pages": "not a window"})

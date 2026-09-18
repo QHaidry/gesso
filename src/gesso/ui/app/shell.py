@@ -259,6 +259,42 @@ class AppShell(QMainWindow):
                 return key
         return None
 
+    def set_page_title(self, key: str, title: str, comment: Optional[str] = None) -> bool:
+        """Retitle a page and its navigation entry, returning whether it existed.
+
+        For changing language. A page's title appears in three places — the
+        ``Page`` record, the navigation button and the header — and a window
+        retitled in two of them is worse than one not retitled at all.
+
+        *comment* is the header's subtitle; leave it out to keep the existing one.
+        """
+        page = self._pages.get(key)
+        if page is None:
+            return False
+
+        page.title = title
+        button = self._nav_buttons.get(key)
+        if button is not None:
+            button.setText(title)
+
+        header = getattr(self, "_headers", {}).get(key)
+        if header is not None:
+            header.set_title(title)
+            if comment is not None:
+                header.set_comment(comment)
+                page.comment = comment
+        return True
+
+    def retranslate(self) -> None:
+        """Re-say the shell's own strings, in whatever language is now active.
+
+        The shell has few strings of its own, and they come from the translator
+        the application handed it — under the reserved ``gesso.`` domain, so an
+        application's own keys can never collide with them. An application that
+        *overrode* one of these should re-apply its own wording afterwards.
+        """
+        self.drawer_button.setToolTip(self._t("gesso.shell.toggle_navigation"))
+
     def show_page(self, key: str) -> bool:
         """Show a page and check its navigation entry."""
         page = self._pages.get(key)

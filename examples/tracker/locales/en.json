@@ -1,0 +1,59 @@
+{
+  "tracker": {
+    "tagline": "A habit a day, remembered for you.",
+    "nav": {
+      "today": "Today",
+      "history": "History",
+      "settings": "Settings",
+      "about": "About"
+    },
+    "page": {
+      "today": "What you are aiming at today.",
+      "history": "The last few days.",
+      "settings": "Everything Tracker remembers between runs."
+    },
+    "status": {
+      "ready": "Ready.",
+      "progress": "{done} of {total} habits done today"
+    },
+    "today": {
+      "reload": "Reload from the log",
+      "done": "Done",
+      "empty": "No habits yet. Add some to tracker.json in the data directory and reload.",
+      "no_habits": "This profile has no habits in it.",
+      "progress": "{done} of {total} done — the day's aim is {target}.",
+      "streak": {
+        "one": "{days} day in a row",
+        "other": "{days} days in a row"
+      }
+    },
+    "history": {
+      "reload": "Reload from the log",
+      "empty": "Nothing recorded yet. Tick a habit on the Today page and it will appear here.",
+      "count": {
+        "one": "{count} habit done",
+        "other": "{count} habits done"
+      }
+    },
+    "settings": {
+      "language": "Language",
+      "language_auto": "System",
+      "language_help": "Applied immediately, and remembered.",
+      "theme": "Palette",
+      "theme_help": "Tracker ships one of its own, Midnight, alongside Gesso's.",
+      "streaks": "Streaks",
+      "streaks_help": "Show how many days in a row each habit runs.",
+      "enabled": "On",
+      "target": "Daily aim",
+      "target_help": "Shown as progress. Never enforced — a missed day is a missed day.",
+      "file": "Settings file"
+    },
+    "about": {
+      "blurb": "Tracker is the last rung of Gesso's example ladder: every feature the SDK has, in one small application.",
+      "version": "Tracker {version}",
+      "built_with": "Built on Gesso {version}.",
+      "settings": "Settings: {path}",
+      "data": "Habits: {path}"
+    }
+  }
+}

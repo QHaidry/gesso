@@ -1,0 +1,59 @@
+{
+  "tracker": {
+    "tagline": "Une habitude par jour, retenue pour vous.",
+    "nav": {
+      "today": "Aujourd'hui",
+      "history": "Historique",
+      "settings": "Préférences",
+      "about": "À propos"
+    },
+    "page": {
+      "today": "Ce que vous visez aujourd'hui.",
+      "history": "Les derniers jours.",
+      "settings": "Tout ce que Tracker retient entre deux exécutions."
+    },
+    "status": {
+      "ready": "Prêt.",
+      "progress": "{done} habitudes sur {total} faites aujourd'hui"
+    },
+    "today": {
+      "reload": "Recharger depuis le journal",
+      "done": "Fait",
+      "empty": "Aucune habitude. Ajoutez-en dans tracker.json, dans le dossier de données, puis rechargez.",
+      "no_habits": "Ce profil ne contient aucune habitude.",
+      "progress": "{done} sur {total} faites — l'objectif du jour est {target}.",
+      "streak": {
+        "one": "{days} jour d'affilée",
+        "other": "{days} jours d'affilée"
+      }
+    },
+    "history": {
+      "reload": "Recharger depuis le journal",
+      "empty": "Rien d'enregistré. Cochez une habitude dans Aujourd'hui et elle apparaîtra ici.",
+      "count": {
+        "one": "{count} habitude faite",
+        "other": "{count} habitudes faites"
+      }
+    },
+    "settings": {
+      "language": "Langue",
+      "language_auto": "Système",
+      "language_help": "Appliquée immédiatement, et retenue.",
+      "theme": "Palette",
+      "theme_help": "Tracker fournit la sienne, Midnight, à côté de celles de Gesso.",
+      "streaks": "Séries",
+      "streaks_help": "Afficher le nombre de jours d'affilée pour chaque habitude.",
+      "enabled": "Activé",
+      "target": "Objectif quotidien",
+      "target_help": "Affiché comme progression. Jamais imposé — un jour manqué est un jour manqué.",
+      "file": "Fichier de préférences"
+    },
+    "about": {
+      "blurb": "Tracker est le dernier échelon des exemples de Gesso : toutes les fonctionnalités du SDK, dans une petite application.",
+      "version": "Tracker {version}",
+      "built_with": "Construit sur Gesso {version}.",
+      "settings": "Préférences : {path}",
+      "data": "Habitudes : {path}"
+    }
+  }
+}
