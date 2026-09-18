@@ -12,6 +12,9 @@
     "dialog": {
       "confirm_title": "Please confirm"
     },
+    "shell": {
+      "toggle_navigation": "Show or hide the navigation"
+    },
     "title": {
       "error": "Error",
       "warning": "Warning",

@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from collections import OrderedDict
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
@@ -76,12 +76,17 @@ class AppShell(QMainWindow):
         *,
         theme_manager: Any = None,
         icons: Any = None,
+        translate: Optional[Callable[..., str]] = None,
         parent: Optional[QWidget] = None,
     ) -> None:
         super().__init__(parent)
         self.spec = spec
         self.theme_manager = theme_manager
         self.icons = icons
+        # The shell has strings of its own, and they go through the
+        # application's translator under the reserved ``gesso.`` domain - so
+        # the framework never ships a label that cannot be translated.
+        self._t = translate or (lambda key, **kwargs: key)
 
         self.setWindowTitle(spec.display_name)
 
@@ -129,7 +134,7 @@ class AppShell(QMainWindow):
         self.drawer_button = IconButton(
             "chevron-left" if self.icons is not None else None,
             icons=self.icons,
-            tooltip="Toggle navigation",
+            tooltip=self._t("gesso.shell.toggle_navigation"),
             size=20,
         )
         self.drawer_button.clicked.connect(self.toggle_sidebar)

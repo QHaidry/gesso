@@ -242,6 +242,30 @@ def test_apply_theme_without_a_manager_is_refused(spec):
     assert AppShell(spec).apply_theme("dark") is False
 
 
+def test_the_shell_translates_its_own_strings(spec):
+    """Gesso's own labels go through the application's translator.
+
+    This is what the reserved ``gesso.`` domain is for: the framework owns
+    those keys, the application owns the rest, and neither can collide.
+    """
+    shell = AppShell(spec, translate=lambda key, **kwargs: f"<{key}>")
+    assert shell.drawer_button.toolTip() == "<gesso.shell.toggle_navigation>"
+
+
+def test_the_shell_shows_the_key_when_it_cannot_translate(spec):
+    # A missing translator shows the key rather than an empty tooltip: visible
+    # on screen, and greppable in the source.
+    assert AppShell(spec).drawer_button.toolTip() == "gesso.shell.toggle_navigation"
+
+
+def test_gesso_ships_a_translation_for_its_own_key():
+    from gesso.i18n import Translator
+
+    for language in ("en", "fr"):
+        translated = Translator(language=language).t("gesso.shell.toggle_navigation")
+        assert translated != "gesso.shell.toggle_navigation"
+
+
 # ----------------------------------------------------------------------
 # The bootstrap
 # ----------------------------------------------------------------------

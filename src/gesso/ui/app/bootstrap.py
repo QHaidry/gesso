@@ -87,7 +87,7 @@ def install_exception_hook(
 
 def run_app(
     spec: AppSpec,
-    build: Callable[[AppShell], Optional[QMainWindow]],
+    build: Optional[Callable[[AppShell], Optional[QMainWindow]]] = None,
     *,
     argv: Optional[Sequence[str]] = None,
     theme: Optional[str] = None,
@@ -99,14 +99,21 @@ def run_app(
     language: Optional[str] = None,
     theme_manager: Optional[ThemeManager] = None,
     icons: Optional[ThemedIcons] = None,
+    shell_factory: Callable[..., AppShell] = AppShell,
+    translate: Optional[Callable[..., str]] = None,
     on_error: Optional[Callable[[str], None]] = None,
 ) -> int:
     """Build the application, show the window, and run the event loop.
 
     *build* receives the :class:`~gesso.ui.app.shell.AppShell` and populates it
     with pages. It may return a window of its own instead, in which case that
-    is shown and the shell goes unused — for an application that needs a window
-    the shell does not describe.
+    is shown. It may also be omitted, for an application whose shell populates
+    itself.
+
+    *shell_factory* is called to make the window, so an application can supply
+    its own :class:`~gesso.ui.app.shell.AppShell` subclass rather than having
+    one built and thrown away. *translate* is handed to the shell for its own
+    strings.
 
     Returns the event loop's exit code, ready for ``sys.exit``.
     """
@@ -142,8 +149,10 @@ def run_app(
 
     install_exception_hook(on_error)
 
-    shell = AppShell(spec, theme_manager=theme_manager, icons=icons)
-    window = build(shell)
+    shell = shell_factory(
+        spec, theme_manager=theme_manager, icons=icons, translate=translate
+    )
+    window = build(shell) if build is not None else None
     if window is None:
         window = shell
     window.show()
