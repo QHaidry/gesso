@@ -1,0 +1,12 @@
+{
+  "greeting": {
+    "title": "Pomodoro",
+    "hello": "Hello, {name}!",
+    "goodbye": "Goodbye, {name}!",
+    "labelled": "Press {key} to continue.",
+    "items": {
+      "one": "{count} item",
+      "other": "{count} items"
+    }
+  }
+}

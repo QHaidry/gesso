@@ -1,0 +1,12 @@
+{
+  "greeting": {
+    "title": "Pomodoro",
+    "hello": "Bonjour, {name} !",
+    "goodbye": "Au revoir, {name} !",
+    "labelled": "Appuyez sur {key} pour continuer.",
+    "items": {
+      "one": "{count} article",
+      "other": "{count} articles"
+    }
+  }
+}
