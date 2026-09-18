@@ -11,7 +11,7 @@ from gesso.ui.app import AppShell, create_app, install_exception_hook, run_app
 ```python
 def run_app(
     spec: AppSpec,
-    build: Callable[[AppShell], QMainWindow | None],
+    build: Callable[[AppShell], QMainWindow | None] | None = None,
     *,
     argv: Sequence[str] | None = None,
     theme: str | None = None,
@@ -23,6 +23,8 @@ def run_app(
     language: str | None = None,
     theme_manager: ThemeManager | None = None,
     icons: ThemedIcons | None = None,
+    shell_factory: Callable[..., AppShell] = AppShell,
+    translate: Callable[..., str] | None = None,
     on_error: Callable[[str], None] | None = None,
 ) -> int
 ```
@@ -33,7 +35,7 @@ event loop's exit code, ready for `sys.exit`.
 | Parameter | Meaning |
 | --- | --- |
 | `spec` | The application's identity. Supplies the `QApplication` metadata and the window title |
-| `build` | Called with the `AppShell` to populate. Return a `QMainWindow` to use that instead of the shell |
+| `build` | Called with the `AppShell` to populate. Return a `QMainWindow` to use that instead. May be omitted, for an application whose shell populates itself |
 | `theme` | The theme to apply. `None` uses the manager's default |
 | `builtin_theme_dirs` | The application's palettes. Defaults to Gesso's |
 | `user_theme_dir` | The user's overrides, which win over every built-in |
@@ -42,7 +44,10 @@ event loop's exit code, ready for `sys.exit`.
 | `window_icon` | The window and task-switcher icon |
 | `language` | Overrides the detected language; used for the layout direction |
 | `theme_manager`, `icons` | Pass pre-built ones, for example in a test |
+| `shell_factory` | Called to make the window, so an application can supply its own `AppShell` subclass rather than having one built and thrown away |
+| `translate` | Handed to the shell for its own strings, which live under the reserved `gesso.` domain |
 | `on_error` | Called with a formatted traceback when a slot raises |
+
 
 An **RTL** language sets the application's layout direction to right-to-left,
 which mirrors the whole interface without any widget knowing.
