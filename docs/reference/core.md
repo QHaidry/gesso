@@ -71,7 +71,7 @@ Gesso accepts. When `paths` is omitted, the real XDG directories are used.
 
 | Signature | Returns |
 | --- | --- |
-| `config_file(extension: str \| None = None)` | `config_dir / f"{config_stem}.{extension or default_config_format}"`. A leading dot in `extension` is optional. |
+| `config_file(extension: Optional[str] = None)` | `config_dir / f"{config_stem}.{extension or default_config_format}"`. A leading dot in `extension` is optional. |
 
 ```python
 >>> context.config_file()

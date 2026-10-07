@@ -93,6 +93,12 @@ markdown_extensions:
   - toc:
       permalink: true
   - pymdownx.details
+  # Renders the :material-…: / :octicons-…: shortcodes as inline SVG. Without
+  # it the shortcodes are left as literal text, which also breaks the `{ .lg }`
+  # attr_list on the icons in the home page's cards.
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
