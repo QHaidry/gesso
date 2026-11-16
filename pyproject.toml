@@ -28,7 +28,16 @@ dependencies = []
 [project.optional-dependencies]
 toml = ["tomli>=2.0.0; python_version < '3.11'", "tomli-w>=1.0.0"]
 yaml = ["PyYAML>=6.0"]
-gui = ["PySide6>=6.5.0"]
+gui = [
+    # PySide6 6.12.0's Linux wheels drop a reference to True/None on ordinary
+    # Qt calls (upstream PYSIDE-3474), so a long enough session frees the
+    # singleton and aborts the interpreter with "Fatal Python error:
+    # bool_dealloc" — after the tests have all passed. Python 3.12+ makes
+    # those singletons immortal (PEP 683), which is why only 3.10 and 3.11 are
+    # exposed; 6.12 is excluded there until a fixed release exists.
+    "PySide6>=6.5.0,!=6.12.*; python_version < '3.12'",
+    "PySide6>=6.5.0; python_version >= '3.12'",
+]
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
