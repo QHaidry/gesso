@@ -1,0 +1,126 @@
+name: Publish
+
+# Publishing is triggered by a version tag, so the tag and the artifact can
+# never disagree: `git tag v0.1.0 && git push origin v0.1.0` publishes 0.1.0.
+#
+# One-time setup on PyPI before the first run (Account settings → Publishing →
+# "Add a pending publisher"):
+#
+#   PyPI Project Name : gesso-sdk
+#   Owner             : QHaidry
+#   Repository        : gesso
+#   Workflow name     : publish.yml
+#   Environment       : pypi
+#
+# With trusted publishing (OIDC) there is no token to store or rotate: the
+# `id-token: write` permission below *is* the credential, and PyPI verifies it
+# came from this repository, workflow and environment. If you would rather use
+# an API token instead, drop the `id-token` permission and give the publish
+# step `password: ${{ secrets.PYPI_API_TOKEN }}`.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      # PySide6 needs these even on the offscreen platform, and the UI tests
+      # import Qt unconditionally.
+      - name: Install Qt runtime libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libegl1 libgl1 libxkbcommon0 libdbus-1-3 libfontconfig1
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev,gui]"
+
+      - name: Test
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: pytest
+
+  build:
+    name: Build and check
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install --upgrade build twine
+          python -m build
+          python -m twine check dist/*
+
+      # The tag is the version, so refuse to publish a mismatch rather than
+      # letting `v0.2.0` ship 0.1.0's code.
+      - name: Check the tag matches the package version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          python - <<'PY'
+          import pathlib, re, sys, tomllib
+
+          version = re.search(
+              r'__version__ = "([^"]+)"',
+              pathlib.Path("src/gesso/__init__.py").read_text(encoding="utf-8"),
+          ).group(1)
+          metadata = tomllib.loads(
+              pathlib.Path("pyproject.toml").read_text(encoding="utf-8")
+          )
+          tag = "${{ github.ref_name }}".lstrip("v")
+          name = metadata["project"]["name"]
+          print(f"tag={tag} package={version} name={name}")
+          if tag != version:
+              sys.exit(f"tag {tag} does not match package version {version}")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/gesso-sdk
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@release/v1
