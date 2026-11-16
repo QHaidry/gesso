@@ -6,7 +6,7 @@ whichever format you prefer.
 ## The fast way: `gesso new`
 
 ```bash
-pip install -e /path/to/gesso        # Gesso is not on PyPI yet
+pip install "gesso-sdk[gui]"
 gesso new myapp
 cd myapp
 pip install -e ".[dev]"
