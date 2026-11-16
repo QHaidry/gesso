@@ -71,12 +71,15 @@ def test_toml_round_trip_when_available():
     assert codec.loads(codec.dumps(data)) == data
 
 
-def test_toml_rejects_non_object_document_when_available():
+def test_toml_root_is_always_a_table_when_available():
     codec = TomlCodec()
     if not codec.available():
         pytest.skip("tomli-w is not installed")
-    with pytest.raises(CodecError):
-        codec.loads("answer = 42")
+    # TOML has no scalar or array document root, so `answer = 42` is a table
+    # with one key and the object-at-the-top-level guard can never trip on a
+    # well-formed TOML file. The guard itself is covered by the JSON and YAML
+    # tests above, whose formats can produce a non-object root.
+    assert codec.loads("answer = 42") == {"answer": 42}
 
 
 def test_toml_without_writer_reports_actionable_reason():
