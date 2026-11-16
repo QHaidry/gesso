@@ -1,0 +1,179 @@
+## **.github/workflows/publish.yaml**
+##
+## Publish gesso-sdk to PyPI with trusted publishing (no API token stored).
+##
+## Triggered by a version tag, so the tag and the artifact cannot disagree:
+##     git tag v0.1.0 && git push origin v0.1.0
+##
+## One-time setup on PyPI before the first run (Account settings → Publishing →
+## "Add a pending publisher"). These fields must match exactly:
+##
+##     PyPI Project Name : gesso-sdk
+##     Owner             : QHaidry
+##     Repository        : gesso
+##     Workflow name     : publish.yaml
+##     Environment       : pypi
+##
+## The `id-token: write` permission below *is* the credential: PyPI verifies it
+## came from this repository, workflow and environment. To use an API token
+## instead, drop that permission and give the publish step
+## `password: ${{ secrets.PYPI_API_TOKEN }}`.
+
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:  # Allow manual trigger
+
+permissions:
+  contents: read
+
+jobs:
+  # Job 1: the release gate
+  test:
+    name: Test Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libegl1 libgl1 libxkbcommon-x11-0 libdbus-1-3
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .[dev,gui]
+
+    - name: Run tests with pytest
+      env:
+        QT_QPA_PLATFORM: offscreen
+      run: |
+        pytest
+
+  # Job 2: Package and build
+  build:
+    name: Build and Package
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.11'
+
+    - name: Install build tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install build wheel twine
+
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Check package
+      run: |
+        twine check dist/*
+
+    # The tag is the version, so refuse to publish a mismatch rather than
+    # letting `v0.2.0` ship 0.1.0's code.
+    - name: Check the tag matches the package version
+      if: startsWith(github.ref, 'refs/tags/v')
+      run: |
+        python - <<'PY'
+        import pathlib, re, sys, tomllib
+
+        version = re.search(
+            r'__version__ = "([^"]+)"',
+            pathlib.Path("src/gesso/__init__.py").read_text(encoding="utf-8"),
+        ).group(1)
+        metadata = tomllib.loads(
+            pathlib.Path("pyproject.toml").read_text(encoding="utf-8")
+        )
+        tag = "${{ github.ref_name }}".lstrip("v")
+        name = metadata["project"]["name"]
+        print(f"tag={tag} package={version} name={name}")
+        if tag != version:
+            sys.exit(f"tag {tag} does not match package version {version}")
+        PY
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-packages
+        path: dist/
+        if-no-files-found: error
+        retention-days: 30
+
+  # Job 3: GitHub Release with the artifacts attached
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: dist-packages
+        path: dist/
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: dist/*
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Job 4: Publish to PyPI (trusted publishing)
+  pypi-publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    needs: [build, release]
+    if: startsWith(github.ref, 'refs/tags/v')
+    environment:
+      name: pypi
+      url: https://pypi.org/p/gesso-sdk
+    permissions:
+      id-token: write  # For trusted publishing
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: dist-packages
+        path: dist/
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        skip-existing: true
+
+# Badge URL for README
+# [![Publish](https://github.com/QHaidry/gesso/actions/workflows/publish.yaml/badge.svg)](https://github.com/QHaidry/gesso/actions/workflows/publish.yaml)
