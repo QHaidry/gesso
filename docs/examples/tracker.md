@@ -235,10 +235,10 @@ machine says" rather than becoming a snapshot of this afternoon's locale.
 
 ## Read the source
 
-- [`examples/tracker/__init__.py`](https://github.com/quoxiom/gesso/blob/main/examples/tracker/__init__.py) — the ladder's top: `build`, `run`, and how the pages are wired
-- [`examples/tracker/pages.py`](https://github.com/quoxiom/gesso/blob/main/examples/tracker/pages.py) — the four pages, and the two hooks
-- [`examples/tracker/session.py`](https://github.com/quoxiom/gesso/blob/main/examples/tracker/session.py) — settings, data and a translator, in one object
-- [`examples/tracker/store.py`](https://github.com/quoxiom/gesso/blob/main/examples/tracker/store.py) — the log, and why it is not a schema
+- [`examples/tracker/__init__.py`](https://github.com/QHaidry/gesso/blob/main/examples/tracker/__init__.py) — the ladder's top: `build`, `run`, and how the pages are wired
+- [`examples/tracker/pages.py`](https://github.com/QHaidry/gesso/blob/main/examples/tracker/pages.py) — the four pages, and the two hooks
+- [`examples/tracker/session.py`](https://github.com/QHaidry/gesso/blob/main/examples/tracker/session.py) — settings, data and a translator, in one object
+- [`examples/tracker/store.py`](https://github.com/QHaidry/gesso/blob/main/examples/tracker/store.py) — the log, and why it is not a schema
 
 ## Next
 

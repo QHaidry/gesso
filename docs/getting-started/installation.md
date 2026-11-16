@@ -72,7 +72,7 @@ Each heavier capability is opt-in, so a command-line tool never drags in Qt.
 ## Install from source
 
 ```bash
-git clone https://github.com/quoxiom/gesso.git
+git clone https://github.com/QHaidry/gesso.git
 cd gesso
 python -m venv venv && source venv/bin/activate
 pip install -e ".[dev,docs]"

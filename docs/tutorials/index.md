@@ -21,7 +21,7 @@ assumes you have read the others. If you are starting from nothing, read
 ## Every tutorial is a real file
 
 The code in these pages is not written for the page. Each tutorial is an actual
-script under [`examples/tutorials/`](https://github.com/quoxiom/gesso/tree/main/examples/tutorials),
+script under [`examples/tutorials/`](https://github.com/QHaidry/gesso/tree/main/examples/tutorials),
 and the pages embed it with `--8<--` so the two cannot drift. The suite runs
 each one **as a subprocess**, using the same command line the page gives you.
 

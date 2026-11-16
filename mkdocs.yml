@@ -1,10 +1,10 @@
 site_name: Gesso
 site_description: "An SDK for building Qt (PySide6) desktop applications"
-site_author: Quoxiom
-site_url: https://quoxiom.github.io/gesso/
-repo_url: https://github.com/quoxiom/gesso
-repo_name: quoxiom/gesso
-copyright: Copyright &copy; 2026 Quoxiom (Qamber Haidry)
+site_author: Qamber Haidry
+site_url: https://qhaidry.github.io/gesso/
+repo_url: https://github.com/QHaidry/gesso
+repo_name: QHaidry/gesso
+copyright: Copyright &copy; 2026 Qamber Haidry
 
 theme:
   name: material

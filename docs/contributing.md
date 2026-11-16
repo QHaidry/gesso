@@ -1,11 +1,11 @@
 # Contributing
 
-Gesso is a small SDK by Quoxiom. Changes should be focused and friendly.
+Gesso is a small SDK by Qamber Haidry. Changes should be focused and friendly.
 
 ## Development setup
 
 ```bash
-git clone https://github.com/quoxiom/gesso.git
+git clone https://github.com/QHaidry/gesso.git
 cd gesso
 python -m venv venv && source venv/bin/activate
 pip install -e ".[dev,docs]"
@@ -91,8 +91,8 @@ the point of the split.
 
 ## Reporting and proposing
 
-- **Bugs and feature requests** — open an [issue](https://github.com/quoxiom/gesso/issues).
-- **Code** — fork, branch, and open a [pull request](https://github.com/quoxiom/gesso/pulls).
+- **Bugs and feature requests** — open an [issue](https://github.com/QHaidry/gesso/issues).
+- **Code** — fork, branch, and open a [pull request](https://github.com/QHaidry/gesso/pulls).
 
 ## License
 

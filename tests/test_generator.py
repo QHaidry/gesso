@@ -25,7 +25,7 @@ def a_spec() -> AppSpec:
     return AppSpec(
         "My App",
         app_id="my-app",
-        org="Quoxiom",
+        org="Acme",
         version="2.0.0",
         description="Does one thing well.",
     )
@@ -62,7 +62,7 @@ def test_no_template_leaves_a_placeholder_behind():
 def test_the_substituted_values_reach_the_files():
     planned = dict(plan(a_spec(), year=2026))
     assert "My App" in planned[Path("README.md")]
-    assert "Quoxiom" in planned[Path("README.md")]
+    assert "Acme" in planned[Path("README.md")]
     assert 'app_id="my-app"' in planned[Path("src/my_app/app.py")]
     assert 'name = "my-app"' in planned[Path("pyproject.toml")]
 
@@ -170,10 +170,10 @@ def test_the_cli_takes_the_name_from_the_directory(tmp_path):
 
 
 def test_the_cli_accepts_a_name_and_an_id(tmp_path):
-    main(["new", str(tmp_path / "here"), "--name", "My App", "--org", "Quoxiom"])
+    main(["new", str(tmp_path / "here"), "--name", "My App", "--org", "Acme"])
     readme = (tmp_path / "here" / "README.md").read_text(encoding="utf-8")
     assert "My App" in readme
-    assert "Quoxiom" in readme
+    assert "Acme" in readme
 
 
 def test_the_cli_without_a_command_prints_help(capsys):

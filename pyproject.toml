@@ -9,7 +9,7 @@ description = "Gesso — a framework for building Qt (PySide6) desktop applicati
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
-authors = [{ name = "Qamber Haidry", email = "qamber.haidry@quoxiom.com" }]
+authors = [{ name = "Qamber Haidry", email = "qamber.haidry@gmail.com" }]
 keywords = ["qt", "pyside6", "desktop", "framework", "design-system", "i18n"]
 classifiers = [
     "Development Status :: 3 - Alpha",

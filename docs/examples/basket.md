@@ -241,9 +241,9 @@ flag was given a meaning that matches what it can actually do.
 
 ## Read the source
 
-- [`examples/basket/__init__.py`](https://github.com/quoxiom/gesso/blob/main/examples/basket/__init__.py) — identity, schema, and the profile that ties settings to a translator
-- [`examples/basket/cli.py`](https://github.com/quoxiom/gesso/blob/main/examples/basket/cli.py) — the commands
-- [`examples/basket/items.py`](https://github.com/quoxiom/gesso/blob/main/examples/basket/items.py) — the data, deliberately not a schema
+- [`examples/basket/__init__.py`](https://github.com/QHaidry/gesso/blob/main/examples/basket/__init__.py) — identity, schema, and the profile that ties settings to a translator
+- [`examples/basket/cli.py`](https://github.com/QHaidry/gesso/blob/main/examples/basket/cli.py) — the commands
+- [`examples/basket/items.py`](https://github.com/QHaidry/gesso/blob/main/examples/basket/items.py) — the data, deliberately not a schema
 
 ## Next
 

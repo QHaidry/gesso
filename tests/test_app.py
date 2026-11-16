@@ -23,8 +23,8 @@ def test_minimal_spec_derives_id_and_display_name():
 
 
 def test_explicit_fields_win():
-    spec = AppSpec("Muralis", app_id="org.quoxiom.muralis", display_name="Muralis Wallpapers")
-    assert spec.app_id == "org.quoxiom.muralis"
+    spec = AppSpec("Muralis", app_id="org.acme.muralis", display_name="Muralis Wallpapers")
+    assert spec.app_id == "org.acme.muralis"
     assert spec.display_name == "Muralis Wallpapers"
 
 

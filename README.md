@@ -46,4 +46,4 @@ pip install "gesso-sdk[gui]"     # + Qt widgets (PySide6)
 
 ## License
 
-MIT — Copyright (c) 2026 Quoxiom (Qamber Haidry).
+MIT — Copyright (c) 2026 Qamber Haidry.

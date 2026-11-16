@@ -167,8 +167,8 @@ copy from a working example than to infer from an API listing.
 
 ## Read the source
 
-- [`examples/gallery/__init__.py`](https://github.com/quoxiom/gesso/blob/main/examples/gallery/__init__.py) — the application, the schema, and the startup
-- [`examples/gallery/window.py`](https://github.com/quoxiom/gesso/blob/main/examples/gallery/window.py) — the whole window, by hand
+- [`examples/gallery/__init__.py`](https://github.com/QHaidry/gesso/blob/main/examples/gallery/__init__.py) — the application, the schema, and the startup
+- [`examples/gallery/window.py`](https://github.com/QHaidry/gesso/blob/main/examples/gallery/window.py) — the whole window, by hand
 
 ## Next
 

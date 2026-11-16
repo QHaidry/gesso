@@ -129,4 +129,4 @@ reaching for `~/.config/<something>` that only one of them should own.
 
 ## License
 
-MIT — Copyright &copy; 2026 Quoxiom (Qamber Haidry).
+MIT — Copyright &copy; 2026 Qamber Haidry.

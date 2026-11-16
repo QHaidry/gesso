@@ -52,7 +52,7 @@ can quietly rewrite your application's identity halfway through a run.
     should state its id, because changing it later moves the user's files:
 
     ```python
-    AppSpec(name="Muralis", app_id="muralis", org="Quoxiom", version="0.4.0")
+    AppSpec(name="Muralis", app_id="muralis", org="Acme", version="0.4.0")
     ```
 
 ## `AppPaths` — where the files go

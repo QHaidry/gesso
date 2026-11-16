@@ -60,7 +60,7 @@ debugging somebody else's boilerplate.
 ```python
 from gesso.core import AppSpec
 
-spec = AppSpec("My App", app_id="my-app", org="Quoxiom")
+spec = AppSpec("My App", app_id="my-app", org="Acme")
 
 for path, text in plan(spec):        # nothing is written
     print(path)
